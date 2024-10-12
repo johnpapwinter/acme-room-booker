@@ -1,5 +1,6 @@
 package com.acme.roombooker.dto;
 
+import com.acme.roombooker.domain.enums.Room;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalTime;
 public class BookingDTO {
 
     private Long id;
-    private String room;
+    private Room room;
     private String bookedBy;
     private LocalDate bookingDate;
     private LocalTime startTime;

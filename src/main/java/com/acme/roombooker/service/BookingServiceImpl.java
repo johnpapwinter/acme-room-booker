@@ -5,6 +5,7 @@ import com.acme.roombooker.domain.enums.MeetingStatus;
 import com.acme.roombooker.domain.repository.BookingRepository;
 import com.acme.roombooker.dto.BookingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
+import com.acme.roombooker.exception.BookingException;
 import com.acme.roombooker.exception.EntityNotFoundException;
 import com.acme.roombooker.exception.ErrorMessages;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,9 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public Page<Booking> getAllBookings(Pageable pageable) {
-        return bookingRepository.findAll(pageable);
+    public Page<BookingDTO> getAllBookings(Pageable pageable) {
+        return bookingRepository.findAll(pageable)
+                .map(this::toBookingDTO);
     }
 
     @Override
@@ -36,6 +38,7 @@ public class BookingServiceImpl implements BookingService {
     public void addBooking(BookingDTO dto) {
         // cannot book room for more than one hour or consecutive multiples of 1 hour (2, 3, 4...)
         // bookings cannot overlap
+        hasOverlap(dto);
 
         Booking booking = new Booking();
         booking.setRoom(dto.getRoom());
@@ -51,21 +54,49 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public void cancelBooking(Long id) {
-        // cannot cancel a booking from a previous date
         Booking booking = bookingRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(ErrorMessages.B001_BOOKING_NOT_FOUND.name())
         );
-
-        if (booking.getBookingDate().isBefore(LocalDate.now())) {
-            throw new EntityNotFoundException(ErrorMessages.B001_BOOKING_NOT_FOUND.name());
-        }
+        canCancel(booking);
 
         booking.setStatus(MeetingStatus.CANCELLED);
     }
 
     @Override
-    public Page<Booking> search(SearchFiltersDTO filters, Pageable pageable) {
-        return bookingRepository.findAllByRoomAndBookingDate(filters.getRoom(), filters.getBookingDate(), pageable);
+    public Page<BookingDTO> search(SearchFiltersDTO filters, Pageable pageable) {
+        return bookingRepository.findAllByRoomAndBookingDate(filters.getRoom(), filters.getBookingDate(), pageable)
+                .map(this::toBookingDTO);
+    }
+
+
+    private void canCancel(Booking booking) {
+        if (booking.getBookingDate().isBefore(LocalDate.now())) {
+            throw new BookingException(ErrorMessages.B002_CANNOT_CANCEL_PAST_BOOKING.name());
+        }
+    }
+
+    private void hasOverlap(BookingDTO dto) {
+        List<Booking> existingBookings = bookingRepository.findAllByRoomAndStartTimeBetween(
+                dto.getRoom(),
+                dto.getStartTime(),
+                dto.getEndTime()
+        );
+
+        if (!existingBookings.isEmpty()) {
+            throw new BookingException(ErrorMessages.B003_BOOKING_OVERLAP.name());
+        }
+    }
+
+    private BookingDTO toBookingDTO(Booking booking) {
+        BookingDTO dto = new BookingDTO();
+        dto.setId(booking.getId());
+        dto.setBookingDate(booking.getBookingDate());
+        dto.setRoom(booking.getRoom());
+        dto.setBookedBy(booking.getBookedBy());
+        dto.setStartTime(booking.getStartTime());
+        dto.setEndTime(booking.getEndTime());
+
+        return dto;
     }
 
 }

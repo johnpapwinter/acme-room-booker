@@ -1,5 +1,6 @@
 package com.acme.roombooker.domain.entity;
 
+import com.acme.roombooker.domain.enums.Room;
 import com.acme.roombooker.domain.enums.MeetingStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,8 +23,9 @@ public class Booking implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "room")
-    private String room;
+    private Room room;
 
     @Column(name = "booked_by")
     private String bookedBy;
@@ -54,4 +56,5 @@ public class Booking implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
