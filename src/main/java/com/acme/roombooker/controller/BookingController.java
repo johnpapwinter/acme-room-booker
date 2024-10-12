@@ -3,6 +3,7 @@ package com.acme.roombooker.controller;
 import com.acme.roombooker.dto.BookingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.service.BookingService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class BookingController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllBookings() {
-        return ResponseEntity.ok(bookingService.getAllBookings());
+    public ResponseEntity<?> getAllBookings(Pageable pageable) {
+        return ResponseEntity.ok(bookingService.getAllBookings(pageable));
     }
 
 
@@ -38,8 +39,8 @@ public class BookingController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<?> searchBookings(@RequestBody SearchFiltersDTO filters) {
-        var response = bookingService.search(filters);
+    public ResponseEntity<?> searchBookings(@RequestBody SearchFiltersDTO filters, Pageable pageable) {
+        var response = bookingService.search(filters, pageable);
 
         return ResponseEntity.ok(response);
     }
