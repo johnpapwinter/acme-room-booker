@@ -22,6 +22,9 @@ public class Booking implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "room")
+    private String room;
+
     @Column(name = "booked_by")
     private String bookedBy;
 

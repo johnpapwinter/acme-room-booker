@@ -1,6 +1,7 @@
 package com.acme.roombooker.controller;
 
 import com.acme.roombooker.dto.BookingDTO;
+import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,18 @@ public class BookingController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/cancel/{id}")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long id) {
+        bookingService.cancelBooking(id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<?> searchBookings(@RequestBody SearchFiltersDTO filters) {
+        var response = bookingService.search(filters);
+
+        return ResponseEntity.ok(response);
+    }
 
 }

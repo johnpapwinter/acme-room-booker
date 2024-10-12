@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class SearchFiltersDTO {
 
-    private String bookedBy;
+    private String room;
     private LocalDate bookingDate;
 
 }
