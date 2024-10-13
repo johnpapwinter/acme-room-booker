@@ -17,6 +17,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     Page<Booking> findAllByRoomAndBookingDate(Room room, LocalDate bookingDate, Pageable pageable);
 
-    List<Booking> findAllByRoomAndStartTimeBetween(Room room, LocalTime start, LocalTime end);
+    List<Booking> findAllByRoomAndBookingDateAndStartTimeBetween(Room room, LocalDate date, LocalTime start, LocalTime end);
 
 }

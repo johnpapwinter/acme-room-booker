@@ -20,7 +20,6 @@
     </changeSet>
     <changeSet id="2" author="johnpapwinter">
         <insert tableName="bookings">
-            <column name="id" valueNumeric="1"/>
             <column name="room" value="MAIN_CONFERENCE_ROOM"/>
             <column name="booked_by" value="elmerfudd@acme.com"/>
             <column name="booking_date" valueDate="2024-10-12"/>
@@ -29,7 +28,6 @@
             <column name="status" value="SCHEDULED"/>
         </insert>
         <insert tableName="bookings">
-            <column name="id" valueNumeric="2"/>
             <column name="room" value="MAIN_CONFERENCE_ROOM"/>
             <column name="booked_by" value="wilecoyote@acme.com"/>
             <column name="booking_date" valueDate="2024-10-13"/>
@@ -38,7 +36,6 @@
             <column name="status" value="SCHEDULED"/>
         </insert>
         <insert tableName="bookings">
-            <column name="id" valueNumeric="3"/>
             <column name="room" value="WILE_E_COYOTE_ROOM"/>
             <column name="booked_by" value="wilecoyote@acme.com"/>
             <column name="booking_date" valueDate="2024-10-12"/>

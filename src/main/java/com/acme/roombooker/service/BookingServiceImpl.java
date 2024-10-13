@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,19 +37,21 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public void addBooking(BookingDTO dto) {
-        // cannot book room for more than one hour or consecutive multiples of 1 hour (2, 3, 4...)
-        // πρέπει ο συνολικός χρόνος σε ώρες να είναι ακέραιος αριθμός
+        isTimeRounded(dto);
+        isDurationValid(dto);
         hasOverlap(dto);
 
         Booking booking = new Booking();
         booking.setRoom(dto.getRoom());
         booking.setBookedBy(dto.getBookedBy());
         booking.setBookingDate(dto.getBookingDate());
-        booking.setStartTime(dto.getStartTime().plusSeconds(1)); // do this to avoid conflicts
+        // since bookings are always from the top of the hour or half-hours and in order to avoid
+        // overlap errors, we add 1 second to the start time, it could be nanos, but seconds will do in this case
+        booking.setStartTime(dto.getStartTime().plusSeconds(1));
         booking.setEndTime(dto.getEndTime());
         booking.setStatus(MeetingStatus.SCHEDULED);
 
-        bookingRepository.save(booking); // 4 test cases
+        bookingRepository.save(booking);
     }
 
     @Override
@@ -88,9 +91,27 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    private void isDurationValid(BookingDTO dto) {
+        Duration duration = Duration.between(dto.getStartTime(), dto.getEndTime());
+
+        if (duration.toMinutes() < 60 || duration.toMinutes() % 60 != 0) {
+            throw new BookingException(ErrorMessages.B005_MEETING_DURATION_IS_NOT_VALID.name());
+        }
+    }
+
+    private void isTimeRounded(BookingDTO dto) {
+        boolean startingTime = dto.getStartTime().getMinute() == 0 | dto.getStartTime().getMinute() == 30;
+        boolean endingTime = dto.getEndTime().getMinute() == 0 | dto.getEndTime().getMinute() == 30;
+
+        if (!(startingTime && endingTime)) {
+            throw new BookingException(ErrorMessages.B004_MEETING_TIME_NOT_ROUNDED.name());
+        }
+    }
+
     private void hasOverlap(BookingDTO dto) {
-        List<Booking> existingBookings = bookingRepository.findAllByRoomAndStartTimeBetween(
+        List<Booking> existingBookings = bookingRepository.findAllByRoomAndBookingDateAndStartTimeBetween(
                 dto.getRoom(),
+                dto.getBookingDate(),
                 dto.getStartTime(),
                 dto.getEndTime()
         );
