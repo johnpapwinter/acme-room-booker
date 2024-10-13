@@ -37,18 +37,18 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public void addBooking(BookingDTO dto) {
         // cannot book room for more than one hour or consecutive multiples of 1 hour (2, 3, 4...)
-        // bookings cannot overlap
+        // πρέπει ο συνολικός χρόνος σε ώρες να είναι ακέραιος αριθμός
         hasOverlap(dto);
 
         Booking booking = new Booking();
         booking.setRoom(dto.getRoom());
         booking.setBookedBy(dto.getBookedBy());
         booking.setBookingDate(dto.getBookingDate());
-        booking.setStartTime(dto.getStartTime());
+        booking.setStartTime(dto.getStartTime().plusSeconds(1)); // do this to avoid conflicts
         booking.setEndTime(dto.getEndTime());
         booking.setStatus(MeetingStatus.SCHEDULED);
 
-        bookingRepository.save(booking);
+        bookingRepository.save(booking); // 4 test cases
     }
 
     @Override
@@ -69,6 +69,19 @@ public class BookingServiceImpl implements BookingService {
     }
 
 
+
+    private BookingDTO toBookingDTO(Booking booking) {
+        BookingDTO dto = new BookingDTO();
+        dto.setId(booking.getId());
+        dto.setBookingDate(booking.getBookingDate());
+        dto.setRoom(booking.getRoom());
+        dto.setBookedBy(booking.getBookedBy());
+        dto.setStartTime(booking.getStartTime());
+        dto.setEndTime(booking.getEndTime());
+
+        return dto;
+    }
+
     private void canCancel(Booking booking) {
         if (booking.getBookingDate().isBefore(LocalDate.now())) {
             throw new BookingException(ErrorMessages.B002_CANNOT_CANCEL_PAST_BOOKING.name());
@@ -85,18 +98,6 @@ public class BookingServiceImpl implements BookingService {
         if (!existingBookings.isEmpty()) {
             throw new BookingException(ErrorMessages.B003_BOOKING_OVERLAP.name());
         }
-    }
-
-    private BookingDTO toBookingDTO(Booking booking) {
-        BookingDTO dto = new BookingDTO();
-        dto.setId(booking.getId());
-        dto.setBookingDate(booking.getBookingDate());
-        dto.setRoom(booking.getRoom());
-        dto.setBookedBy(booking.getBookedBy());
-        dto.setStartTime(booking.getStartTime());
-        dto.setEndTime(booking.getEndTime());
-
-        return dto;
     }
 
 }

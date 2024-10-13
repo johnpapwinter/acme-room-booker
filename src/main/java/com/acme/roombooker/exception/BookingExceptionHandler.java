@@ -30,5 +30,16 @@ public class BookingExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorMessageDTO> handleException(Exception exception) {
+        exception.printStackTrace();
+
+        ErrorMessageDTO error = new ErrorMessageDTO();
+        error.setMessage(ErrorMessages.G001_CONTACT_YOUR_ADMINISTRATOR.name());
+        error.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 }
