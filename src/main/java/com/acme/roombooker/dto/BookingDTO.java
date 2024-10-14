@@ -15,20 +15,20 @@ public class BookingDTO {
 
     private Long id;
 
-    @NotNull(message = ValidationErrorMessages.V001_ROOM_IS_REQUIRED)
+    @NotNull(message = ValidationErrorMessages.VALIDATION_001_ROOM_IS_REQUIRED)
     private Room room;
 
-    @NotBlank(message = ValidationErrorMessages.V002_MEETING_ORGANIZER_IS_REQUIRED)
-    @Email(message = ValidationErrorMessages.V003_INVALID_EMAIL_ADDRESS)
+    @NotBlank(message = ValidationErrorMessages.VALIDATION_002_MEETING_ORGANIZER_IS_REQUIRED)
+    @Email(message = ValidationErrorMessages.VALIDATION_003_INVALID_EMAIL_ADDRESS)
     private String bookedBy;
 
-    @NotNull(message = ValidationErrorMessages.V004_DATE_IS_REQUIRED)
+    @NotNull(message = ValidationErrorMessages.VALIDATION_004_DATE_IS_REQUIRED)
     private LocalDate bookingDate;
 
-    @NotNull(message = ValidationErrorMessages.V005_STARTING_TIME_IS_REQUIRED)
+    @NotNull(message = ValidationErrorMessages.VALIDATION_005_STARTING_TIME_IS_REQUIRED)
     private LocalTime startTime;
 
-    @NotNull(message = ValidationErrorMessages.V006_END_TIME_IS_REQUIRED)
+    @NotNull(message = ValidationErrorMessages.VALIDATION_006_END_TIME_IS_REQUIRED)
     private LocalTime endTime;
 
 

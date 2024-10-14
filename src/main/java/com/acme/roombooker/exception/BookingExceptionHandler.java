@@ -2,14 +2,13 @@ package com.acme.roombooker.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 public class BookingExceptionHandler {
@@ -34,12 +33,11 @@ public class BookingExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException exception) {
-        Map<String, String> errors = new HashMap<>();
+    public ResponseEntity<List<String>> handleValidationExceptions(MethodArgumentNotValidException exception) {
+        List<String> errors = new ArrayList<>();
         exception.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            errors.add(errorMessage);
         });
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
@@ -50,7 +48,7 @@ public class BookingExceptionHandler {
         exception.printStackTrace();
 
         ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(ErrorMessages.G001_CONTACT_YOUR_ADMINISTRATOR.name());
+        error.setMessage(ErrorMessages.GLOBAL_001_CONTACT_YOUR_ADMINISTRATOR.name());
         error.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

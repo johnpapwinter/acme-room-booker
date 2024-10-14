@@ -15,4 +15,6 @@ public interface BookingService {
 
     Page<BookingDTO> search(SearchFiltersDTO filters, Pageable pageable);
 
+    void closeConductedMeetings();
+
 }

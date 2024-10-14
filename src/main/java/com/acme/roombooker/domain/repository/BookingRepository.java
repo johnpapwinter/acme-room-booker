@@ -1,6 +1,7 @@
 package com.acme.roombooker.domain.repository;
 
 import com.acme.roombooker.domain.entity.Booking;
+import com.acme.roombooker.domain.enums.MeetingStatus;
 import com.acme.roombooker.domain.enums.Room;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,5 +19,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     Page<Booking> findAllByRoomAndBookingDate(Room room, LocalDate bookingDate, Pageable pageable);
 
     List<Booking> findAllByRoomAndBookingDateAndStartTimeBetween(Room room, LocalDate date, LocalTime start, LocalTime end);
+
+    List<Booking> findAllByBookingDateBeforeAndStatus(LocalDate bookingDate, MeetingStatus status);
 
 }

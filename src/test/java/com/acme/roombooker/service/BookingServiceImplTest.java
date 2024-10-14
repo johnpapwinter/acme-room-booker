@@ -21,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -30,7 +29,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -131,7 +129,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto));
 
         // then
-        assertEquals(ErrorMessages.B005_MEETING_DURATION_IS_NOT_VALID.name(), exception.getMessage());
+        assertEquals(ErrorMessages.BOOKING_005_MEETING_DURATION_IS_NOT_VALID.name(), exception.getMessage());
     }
 
     @Test
@@ -149,7 +147,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto));
 
         // then
-        assertEquals(ErrorMessages.B004_MEETING_TIME_NOT_ROUNDED.name(), exception.getMessage());
+        assertEquals(ErrorMessages.BOOKING_004_MEETING_TIME_NOT_ROUNDED.name(), exception.getMessage());
     }
 
     @Test
@@ -163,7 +161,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(validBookingDTO));
 
         // then
-        assertEquals(ErrorMessages.B003_BOOKING_OVERLAP.name(), exception.getMessage());
+        assertEquals(ErrorMessages.BOOKING_003_BOOKING_OVERLAP.name(), exception.getMessage());
     }
 
     @Test
@@ -190,7 +188,7 @@ class BookingServiceImplTest {
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookingService.cancelBooking(1L));
 
         // then
-        assertEquals(ErrorMessages.B001_BOOKING_NOT_FOUND.name(), exception.getMessage());
+        assertEquals(ErrorMessages.BOOKING_001_BOOKING_NOT_FOUND.name(), exception.getMessage());
     }
 
     @Test
@@ -208,7 +206,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.cancelBooking(1L));
 
         // then
-        assertEquals(ErrorMessages.B002_CANNOT_CANCEL_PAST_BOOKING.name(), exception.getMessage());
+        assertEquals(ErrorMessages.BOOKING_002_CANNOT_CANCEL_PAST_BOOKING.name(), exception.getMessage());
     }
 
 
@@ -233,4 +231,21 @@ class BookingServiceImplTest {
         assertEquals(1, result.getTotalElements());
         verify(bookingRepository).findAllByRoomAndBookingDate(Room.MAIN_CONFERENCE_ROOM, LocalDate.now(), pageable);
     }
+
+    @Test
+    @DisplayName("Should complete past bookings")
+    void shouldCompletePastBookings() {
+        // given
+        when(bookingRepository.findAllByBookingDateBeforeAndStatus(LocalDate.now(), MeetingStatus.SCHEDULED))
+                .thenReturn(Arrays.asList(validBooking1, validBooking2));
+
+        // when
+        bookingService.closeConductedMeetings();
+
+        // then
+        assertEquals(MeetingStatus.COMPLETED, validBooking1.getStatus());
+        assertEquals(MeetingStatus.COMPLETED, validBooking2.getStatus());
+
+    }
+
 }
