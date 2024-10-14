@@ -29,17 +29,17 @@ public class BookingController {
 
 
     @PostMapping("/book")
-    public ResponseEntity<Void> bookMeeting(@Valid @RequestBody BookingDTO dto) {
-        bookingService.addBooking(dto);
+    public ResponseEntity<Long> bookMeeting(@Valid @RequestBody BookingDTO dto) {
+        Long result = bookingService.addBooking(dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/cancel/{id}")
-    public ResponseEntity<Void> cancelBooking(@PathVariable Long id) {
-        bookingService.cancelBooking(id);
+    public ResponseEntity<BookingDTO> cancelBooking(@PathVariable Long id) {
+        BookingDTO result = bookingService.cancelBooking(id);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(result);
     }
 
     @PostMapping("/search")

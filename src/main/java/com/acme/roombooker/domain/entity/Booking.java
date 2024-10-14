@@ -24,19 +24,19 @@ public class Booking implements Serializable {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "room")
+    @Column(name = "room", nullable = false)
     private Room room;
 
-    @Column(name = "booked_by")
+    @Column(name = "booked_by", nullable = false)
     private String bookedBy;
 
-    @Column(name = "booking_date")
+    @Column(name = "booking_date", nullable = false)
     private LocalDate bookingDate;
 
-    @Column(name = "start_time")
+    @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 
-    @Column(name = "end_time")
+    @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
     @Enumerated(EnumType.STRING)

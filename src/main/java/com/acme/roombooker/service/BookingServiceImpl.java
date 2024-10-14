@@ -36,7 +36,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public void addBooking(BookingDTO dto) {
+    public Long addBooking(BookingDTO dto) {
         isTimeRounded(dto);
         isDurationValid(dto);
         hasOverlap(dto);
@@ -52,17 +52,21 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(MeetingStatus.SCHEDULED);
 
         bookingRepository.save(booking);
+
+        return booking.getId();
     }
 
     @Override
     @Transactional
-    public void cancelBooking(Long id) {
+    public BookingDTO cancelBooking(Long id) {
         Booking booking = bookingRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(ErrorMessages.BOOKING_001_BOOKING_NOT_FOUND.name())
         );
         canCancel(booking);
 
         booking.setStatus(MeetingStatus.CANCELLED);
+
+        return toBookingDTO(booking);
     }
 
     @Override

@@ -9,9 +9,9 @@ public interface BookingService {
 
     Page<BookingDTO> getAllBookings(Pageable pageable);
 
-    void addBooking(BookingDTO dto);
+    Long addBooking(BookingDTO dto);
 
-    void cancelBooking(Long id);
+    BookingDTO cancelBooking(Long id);
 
     Page<BookingDTO> search(SearchFiltersDTO filters, Pageable pageable);
 
