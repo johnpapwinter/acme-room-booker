@@ -8,6 +8,8 @@ import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.exception.BookingException;
 import com.acme.roombooker.exception.EntityNotFoundException;
 import com.acme.roombooker.exception.ErrorMessages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Service
 public class BookingServiceImpl implements BookingService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class);
 
     private final BookingRepository bookingRepository;
 
@@ -53,6 +57,7 @@ public class BookingServiceImpl implements BookingService {
 
         bookingRepository.save(booking);
 
+        logger.info("CREATED BOOKING WITH ID:{}", booking.getId());
         return booking.getId();
     }
 
@@ -66,6 +71,7 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(MeetingStatus.CANCELLED);
 
+        logger.info("CANCELLED BOOKING WITH ID:{}", booking.getId());
         return toBookingDTO(booking);
     }
 
@@ -80,6 +86,7 @@ public class BookingServiceImpl implements BookingService {
     public void closeConductedMeetings() {
         List<Booking> pastBookings = bookingRepository.findAllByBookingDateBeforeAndStatus(LocalDate.now(), MeetingStatus.SCHEDULED);
         pastBookings.forEach(booking -> booking.setStatus(MeetingStatus.COMPLETED));
+        logger.info("CLOSED {} PAST BOOKINGS", pastBookings.size());
     }
 
     private BookingDTO toBookingDTO(Booking booking) {

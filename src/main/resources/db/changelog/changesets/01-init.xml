@@ -33,7 +33,7 @@
             <column name="room" value="MAIN_CONFERENCE_ROOM"/>
             <column name="booked_by" value="elmerfudd@acme.com"/>
             <column name="booking_date" valueDate="2024-10-12"/>
-            <column name="start_time" valueDate="09:00:00"/>
+            <column name="start_time" valueDate="09:00:01"/>
             <column name="end_time" valueDate="10:00:00"/>
             <column name="status" value="SCHEDULED"/>
         </insert>
@@ -41,7 +41,7 @@
             <column name="room" value="MAIN_CONFERENCE_ROOM"/>
             <column name="booked_by" value="wilecoyote@acme.com"/>
             <column name="booking_date" valueDate="2024-10-13"/>
-            <column name="start_time" valueDate="10:00:00"/>
+            <column name="start_time" valueDate="10:00:01"/>
             <column name="end_time" valueDate="11:00:00"/>
             <column name="status" value="SCHEDULED"/>
         </insert>
@@ -49,7 +49,7 @@
             <column name="room" value="WILE_E_COYOTE_ROOM"/>
             <column name="booked_by" value="wilecoyote@acme.com"/>
             <column name="booking_date" valueDate="2024-10-12"/>
-            <column name="start_time" valueDate="09:30:00"/>
+            <column name="start_time" valueDate="09:30:01"/>
             <column name="end_time" valueDate="10:30:00"/>
             <column name="status" value="SCHEDULED"/>
         </insert>

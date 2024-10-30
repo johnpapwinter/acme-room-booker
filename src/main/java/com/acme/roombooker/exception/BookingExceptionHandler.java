@@ -1,5 +1,7 @@
 package com.acme.roombooker.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,6 +15,7 @@ import java.util.List;
 @ControllerAdvice
 public class BookingExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(BookingExceptionHandler.class);
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorMessageDTO> handleEntityNotFoundException(EntityNotFoundException exception) {
@@ -20,6 +23,7 @@ public class BookingExceptionHandler {
         error.setMessage(exception.getMessage());
         error.setTimestamp(LocalDateTime.now());
 
+        logger.error(exception.getMessage(), exception);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
@@ -29,6 +33,7 @@ public class BookingExceptionHandler {
         error.setMessage(exception.getMessage());
         error.setTimestamp(LocalDateTime.now());
 
+        logger.error(exception.getMessage(), exception);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -40,6 +45,7 @@ public class BookingExceptionHandler {
             errors.add(errorMessage);
         });
 
+        logger.error(exception.getMessage(), exception);
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
