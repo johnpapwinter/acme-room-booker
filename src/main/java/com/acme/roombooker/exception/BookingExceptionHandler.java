@@ -1,5 +1,6 @@
 package com.acme.roombooker.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -49,12 +50,25 @@ public class BookingExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<ErrorMessageDTO> handleInvalidFormatException(InvalidFormatException exception) {
+        ErrorMessageDTO error = new ErrorMessageDTO();
+        error.setMessage(ErrorMessages.ARB_006_INVALID_DATA_INPUT.name());
+        error.setTimestamp(LocalDateTime.now());
+
+        logger.error(exception.getMessage(), exception);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * GENERIC
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessageDTO> handleException(Exception exception) {
         exception.printStackTrace();
 
         ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(ErrorMessages.GLOBAL_001_CONTACT_YOUR_ADMINISTRATOR.name());
+        error.setMessage(ErrorMessages.ARB_501_CONTACT_YOUR_ADMINISTRATOR.name());
         error.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
