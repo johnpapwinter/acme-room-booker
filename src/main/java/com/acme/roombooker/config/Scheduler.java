@@ -1,4 +1,4 @@
-package com.acme.roombooker.configuration;
+package com.acme.roombooker.config;
 
 import com.acme.roombooker.service.BookingService;
 import org.springframework.context.annotation.Configuration;

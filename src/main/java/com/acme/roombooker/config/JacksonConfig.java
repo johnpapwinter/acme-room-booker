@@ -1,4 +1,4 @@
-package com.acme.roombooker.configuration;
+package com.acme.roombooker.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;

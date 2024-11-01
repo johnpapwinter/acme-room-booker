@@ -43,6 +43,10 @@ public class Booking implements Serializable {
     @Column(name = "status")
     private MeetingStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "acme_user_id")
+    private AcmeUser acmeUser;
+
 
     @Override
     public boolean equals(Object o) {

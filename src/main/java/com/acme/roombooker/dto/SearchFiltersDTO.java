@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Data
 public class SearchFiltersDTO {
 
-    @NotNull(message = ValidationErrorMessages.VALIDATION_001_ROOM_IS_REQUIRED)
+    @NotNull(message = ValidationErrorMessages.ARB1001_ROOM_IS_REQUIRED)
     private Room room;
-    @NotNull(message = ValidationErrorMessages.VALIDATION_004_DATE_IS_REQUIRED)
+    @NotNull(message = ValidationErrorMessages.ARB1004_DATE_IS_REQUIRED)
     private LocalDate bookingDate;
 
 }
