@@ -1,59 +1,55 @@
-2024-10-31 18:09:48.720 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
-2024-10-31 18:09:48.757 [main] INFO  c.a.roombooker.RoomBookerApplication - Starting RoomBookerApplication using Java 21.0.2 with PID 7624 (C:\Users\johnp\Downloads\room-booker\target\classes started by johnp in C:\Users\johnp\Downloads\room-booker)
-2024-10-31 18:09:48.758 [main] DEBUG c.a.roombooker.RoomBookerApplication - Running with Spring Boot v3.3.4, Spring v6.1.13
-2024-10-31 18:09:48.758 [main] INFO  c.a.roombooker.RoomBookerApplication - No active profile set, falling back to 1 default profile: "default"
-2024-10-31 18:09:49.426 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-10-31 18:09:49.473 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 40 ms. Found 1 JPA repository interface.
-2024-10-31 18:09:49.902 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2024-10-31 18:09:49.912 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2024-10-31 18:09:49.916 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-10-31 18:09:49.916 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.30]
-2024-10-31 18:09:49.970 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2024-10-31 18:09:49.970 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1175 ms
-2024-10-31 18:09:49.996 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-10-31 18:09:50.176 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:roomdb user=SA
-2024-10-31 18:09:50.178 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-10-31 18:09:50.187 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:roomdb'
-2024-10-31 18:09:50.339 [main] INFO  liquibase.database - Set default schema name to PUBLIC
-2024-10-31 18:09:50.745 [main] INFO  liquibase.changelog - Creating database history table with name: PUBLIC.DATABASECHANGELOG
-2024-10-31 18:09:50.824 [main] INFO  liquibase.changelog - Reading from PUBLIC.DATABASECHANGELOG
-2024-10-31 18:09:50.876 [main] INFO  liquibase.lockservice - Successfully acquired change log lock
-2024-10-31 18:09:50.877 [main] INFO  liquibase.command - Using deploymentId: 0390990876
-2024-10-31 18:09:50.878 [main] INFO  liquibase.changelog - Reading from PUBLIC.DATABASECHANGELOG
-2024-10-31 18:09:50.906 [main] INFO  liquibase.ui - Running Changeset: db/changelog/changesets/01-init.xml::1::johnpapwinter
-2024-10-31 18:09:50.914 [main] INFO  liquibase.changelog - Table bookings created
-2024-10-31 18:09:50.915 [main] INFO  liquibase.changelog - ChangeSet db/changelog/changesets/01-init.xml::1::johnpapwinter ran successfully in 7ms
-2024-10-31 18:09:50.921 [main] INFO  liquibase.ui - Running Changeset: db/changelog/changesets/02-populate-table.xml::1::johnpapwinter
-2024-10-31 18:09:50.924 [main] INFO  liquibase.changelog - New row inserted into bookings
-2024-10-31 18:09:50.925 [main] INFO  liquibase.changelog - New row inserted into bookings
-2024-10-31 18:09:50.927 [main] INFO  liquibase.changelog - New row inserted into bookings
-2024-10-31 18:09:50.927 [main] INFO  liquibase.changelog - ChangeSet db/changelog/changesets/02-populate-table.xml::1::johnpapwinter ran successfully in 6ms
-2024-10-31 18:09:50.932 [main] INFO  liquibase.util - UPDATE SUMMARY
-2024-10-31 18:09:50.933 [main] INFO  liquibase.util - Run:                          2
-2024-10-31 18:09:50.933 [main] INFO  liquibase.util - Previously run:               0
-2024-10-31 18:09:50.933 [main] INFO  liquibase.util - Filtered out:                 0
-2024-10-31 18:09:50.933 [main] INFO  liquibase.util - -------------------------------
-2024-10-31 18:09:50.933 [main] INFO  liquibase.util - Total change sets:            2
-2024-10-31 18:09:50.934 [main] INFO  liquibase.util - Update summary generated
-2024-10-31 18:09:50.935 [main] INFO  liquibase.command - Update command completed successfully.
-2024-10-31 18:09:50.936 [main] INFO  liquibase.ui - Liquibase: Update has been successful. Rows affected: 5
-2024-10-31 18:09:50.938 [main] INFO  liquibase.lockservice - Successfully released change log lock
-2024-10-31 18:09:50.939 [main] INFO  liquibase.command - Command execution complete
-2024-10-31 18:09:51.003 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-10-31 18:09:51.063 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.3.Final
-2024-10-31 18:09:51.094 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2024-10-31 18:09:51.356 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-10-31 18:09:51.396 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-10-31 18:09:52.109 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-10-31 18:09:52.112 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-10-31 18:09:52.507 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-10-31 18:09:53.146 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2024-10-31 18:09:53.161 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2024-10-31 18:09:53.169 [main] INFO  c.a.roombooker.RoomBookerApplication - Started RoomBookerApplication in 4.891 seconds (process running for 5.671)
-2024-10-31 18:10:14.762 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-10-31 18:10:14.762 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-10-31 18:10:14.763 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-10-31 18:10:15.284 [http-nio-8080-exec-10] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 226 ms
-2024-10-31 18:10:44.104 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2024-10-31 18:10:44.106 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2024-10-31 18:10:44.108 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-11-01 14:08:11.804 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-11-01 14:08:11.840 [main] INFO  c.a.roombooker.RoomBookerApplication - Starting RoomBookerApplication using Java 21.0.2 with PID 23016 (C:\Users\johnp\Downloads\room-booker\target\classes started by johnp in C:\Users\johnp\Downloads\room-booker)
+2024-11-01 14:08:11.840 [main] DEBUG c.a.roombooker.RoomBookerApplication - Running with Spring Boot v3.3.4, Spring v6.1.13
+2024-11-01 14:08:11.841 [main] INFO  c.a.roombooker.RoomBookerApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-01 14:08:12.641 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-01 14:08:12.685 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 38 ms. Found 1 JPA repository interface.
+2024-11-01 14:08:13.111 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-11-01 14:08:13.121 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-01 14:08:13.124 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-11-01 14:08:13.125 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-01 14:08:13.180 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-11-01 14:08:13.181 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1304 ms
+2024-11-01 14:08:13.213 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-11-01 14:08:13.381 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:roomdb user=SA
+2024-11-01 14:08:13.383 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-11-01 14:08:13.391 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:roomdb'
+2024-11-01 14:08:13.540 [main] INFO  liquibase.database - Set default schema name to PUBLIC
+2024-11-01 14:08:13.981 [main] INFO  liquibase.changelog - Creating database history table with name: PUBLIC.DATABASECHANGELOG
+2024-11-01 14:08:14.074 [main] INFO  liquibase.changelog - Reading from PUBLIC.DATABASECHANGELOG
+2024-11-01 14:08:14.136 [main] INFO  liquibase.lockservice - Successfully acquired change log lock
+2024-11-01 14:08:14.137 [main] INFO  liquibase.command - Using deploymentId: 0462894136
+2024-11-01 14:08:14.138 [main] INFO  liquibase.changelog - Reading from PUBLIC.DATABASECHANGELOG
+2024-11-01 14:08:14.165 [main] INFO  liquibase.ui - Running Changeset: db/changelog/changesets/01-init.xml::1::johnpapwinter
+2024-11-01 14:08:14.173 [main] INFO  liquibase.changelog - Table bookings created
+2024-11-01 14:08:14.174 [main] INFO  liquibase.changelog - ChangeSet db/changelog/changesets/01-init.xml::1::johnpapwinter ran successfully in 7ms
+2024-11-01 14:08:14.181 [main] INFO  liquibase.ui - Running Changeset: db/changelog/changesets/02-populate-table.xml::1::johnpapwinter
+2024-11-01 14:08:14.185 [main] INFO  liquibase.changelog - New row inserted into bookings
+2024-11-01 14:08:14.186 [main] INFO  liquibase.changelog - New row inserted into bookings
+2024-11-01 14:08:14.188 [main] INFO  liquibase.changelog - New row inserted into bookings
+2024-11-01 14:08:14.188 [main] INFO  liquibase.changelog - ChangeSet db/changelog/changesets/02-populate-table.xml::1::johnpapwinter ran successfully in 7ms
+2024-11-01 14:08:14.197 [main] INFO  liquibase.util - UPDATE SUMMARY
+2024-11-01 14:08:14.198 [main] INFO  liquibase.util - Run:                          2
+2024-11-01 14:08:14.198 [main] INFO  liquibase.util - Previously run:               0
+2024-11-01 14:08:14.198 [main] INFO  liquibase.util - Filtered out:                 0
+2024-11-01 14:08:14.198 [main] INFO  liquibase.util - -------------------------------
+2024-11-01 14:08:14.198 [main] INFO  liquibase.util - Total change sets:            2
+2024-11-01 14:08:14.199 [main] INFO  liquibase.util - Update summary generated
+2024-11-01 14:08:14.201 [main] INFO  liquibase.command - Update command completed successfully.
+2024-11-01 14:08:14.202 [main] INFO  liquibase.ui - Liquibase: Update has been successful. Rows affected: 5
+2024-11-01 14:08:14.205 [main] INFO  liquibase.lockservice - Successfully released change log lock
+2024-11-01 14:08:14.207 [main] INFO  liquibase.command - Command execution complete
+2024-11-01 14:08:14.280 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-01 14:08:14.344 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-11-01 14:08:14.376 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-11-01 14:08:14.699 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-01 14:08:14.743 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-11-01 14:08:15.519 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-01 14:08:15.523 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-01 14:08:15.932 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-11-01 14:08:16.637 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-11-01 14:08:16.654 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-11-01 14:08:16.661 [main] INFO  c.a.roombooker.RoomBookerApplication - Started RoomBookerApplication in 5.327 seconds (process running for 15.4)
+2024-11-01 14:08:34.803 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-11-01 14:08:34.804 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-11-01 14:08:34.806 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
