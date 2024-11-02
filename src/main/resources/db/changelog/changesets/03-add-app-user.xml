@@ -23,8 +23,8 @@
             </column>
         </createTable>
         <addColumn tableName="bookings">
-            <column name="acme_user_id">
-                <constraints foreignKeyName="fk_acme_user" references="acme_users" nullable="false"/>
+            <column name="acme_user_id" type="BIGINT">
+                <constraints foreignKeyName="fk_acme_user" references="acme_users(id)" nullable="false"/>
             </column>
         </addColumn>
         <rollback>

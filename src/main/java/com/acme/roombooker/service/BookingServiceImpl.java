@@ -31,13 +31,22 @@ public class BookingServiceImpl implements BookingService {
         this.bookingRepository = bookingRepository;
     }
 
-
+    /**
+     * Takes a Spring Pageable object and returns the bookings in a paginated form.
+     * @param pageable The Pageable object containing pagination information.
+     * @return A Page of BookingDTO objects.
+     */
     @Override
     public Page<BookingDTO> getAllBookings(Pageable pageable) {
         return bookingRepository.findAll(pageable)
                 .map(this::toBookingDTO);
     }
 
+    /**
+     * Adds a new booking based on the provided BookingDTO.
+     * @param dto The BookingDTO object containing the booking details.
+     * @return The ID of the newly created booking.
+     */
     @Override
     @Transactional
     public Long addBooking(BookingDTO dto) {
@@ -61,6 +70,12 @@ public class BookingServiceImpl implements BookingService {
         return booking.getId();
     }
 
+    /**
+     * Cancels a booking by its ID.
+     * @param id The ID of the booking to be cancelled.
+     * @return The BookingDTO object representing the cancelled booking.
+     * @throws EntityNotFoundException if the booking with the given ID is not found.
+     */
     @Override
     @Transactional
     public BookingDTO cancelBooking(Long id) {
@@ -75,6 +90,12 @@ public class BookingServiceImpl implements BookingService {
         return toBookingDTO(booking);
     }
 
+    /**
+     * Searches for bookings based on the provided search filters and pagination information.
+     * @param filters The SearchFiltersDTO object containing the search criteria.
+     * @param pageable The Pageable object containing pagination information.
+     * @return A Page of BookingDTO objects matching the search criteria.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<BookingDTO> search(SearchFiltersDTO filters, Pageable pageable) {
@@ -82,6 +103,9 @@ public class BookingServiceImpl implements BookingService {
                 .map(this::toBookingDTO);
     }
 
+    /**
+     * Closes all conducted meetings by setting their status to COMPLETED.
+     */
     @Override
     @Transactional
     public void closeConductedMeetings() {
