@@ -6,6 +6,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <include file="changesets/01-init.xml" relativeToChangelogFile="true"/>
-    <include file="changesets/02-populate-table.xml" relativeToChangelogFile="true"/>
-    <include file="changesets/03-add-app-user.xml" relativeToChangelogFile="true"/>
+    <include file="changesets/02-add-app-user.xml" relativeToChangelogFile="true"/>
+    <include file="changesets/03-populate-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

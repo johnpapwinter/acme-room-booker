@@ -5,6 +5,13 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="1" author="johnpapwinter">
+        <insert tableName="acme_users">
+            <column name="email" value="elmer@acme.com"/>
+            <column name="name" value="Elmer Fudd"/>
+            <column name="role" value="USER"/>
+            <column name="username" value="elmerfudd"/>
+            <column name="password" value="123"/>
+        </insert>
         <insert tableName="bookings">
             <column name="room" value="MAIN_CONFERENCE_ROOM"/>
             <column name="booked_by" value="elmerfudd@acme.com"/>
@@ -12,6 +19,7 @@
             <column name="start_time" valueDate="09:00:01"/>
             <column name="end_time" valueDate="10:00:00"/>
             <column name="status" value="SCHEDULED"/>
+            <column name="acme_user_id" value="1"/>
         </insert>
         <insert tableName="bookings">
             <column name="room" value="MAIN_CONFERENCE_ROOM"/>
@@ -20,6 +28,7 @@
             <column name="start_time" valueDate="10:00:01"/>
             <column name="end_time" valueDate="11:00:00"/>
             <column name="status" value="SCHEDULED"/>
+            <column name="acme_user_id" value="1"/>
         </insert>
         <insert tableName="bookings">
             <column name="room" value="WILE_E_COYOTE_ROOM"/>
@@ -28,6 +37,7 @@
             <column name="start_time" valueDate="09:30:01"/>
             <column name="end_time" valueDate="10:30:00"/>
             <column name="status" value="SCHEDULED"/>
+            <column name="acme_user_id" value="1"/>
         </insert>
     </changeSet>
 </databaseChangeLog>
