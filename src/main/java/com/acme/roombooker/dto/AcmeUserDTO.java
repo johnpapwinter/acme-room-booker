@@ -14,6 +14,8 @@ public class AcmeUserDTO {
     @NotBlank(message = ValidationErrorMessages.ARB1008_EMAIL_IS_REQUIRED)
     @Email(message = ValidationErrorMessages.ARB1003_INVALID_EMAIL_ADDRESS)
     private String email;
+    @NotBlank(message = ValidationErrorMessages.ARB1009_USERNAME_IS_REQUIRED)
+    private String username;
     private AcmeRole role;
 
 }

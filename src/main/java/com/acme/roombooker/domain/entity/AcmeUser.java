@@ -27,12 +27,15 @@ public class AcmeUser implements Serializable {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private AcmeRole role;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private AcmeRole role;
 
     @OneToMany(mappedBy = "acmeUser")
     private List<Booking> bookings = new ArrayList<>();

@@ -13,5 +13,6 @@ public class ValidationErrorMessages {
 
     public static final String ARB1007_NAME_IS_REQUIRED = "NAME_IS_REQUIRED";
     public static final String ARB1008_EMAIL_IS_REQUIRED = "EMAIL_IS_REQUIRED";
+    public static final String ARB1009_USERNAME_IS_REQUIRED = "USERNAME_IS_REQUIRED";
 
 }

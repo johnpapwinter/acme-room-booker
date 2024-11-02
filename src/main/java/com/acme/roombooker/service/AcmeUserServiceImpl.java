@@ -4,6 +4,8 @@ import com.acme.roombooker.domain.entity.AcmeUser;
 import com.acme.roombooker.domain.enums.AcmeRole;
 import com.acme.roombooker.domain.repository.AcmeUserRepository;
 import com.acme.roombooker.dto.AcmeUserDTO;
+import com.acme.roombooker.exception.EntityNotFoundException;
+import com.acme.roombooker.exception.ErrorMessages;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,13 @@ public class AcmeUserServiceImpl implements AcmeUserService {
                 .map(this::toAcmeUserDTO);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public AcmeUser findAcmeUserByUsername(String username) {
+        return acmeUserRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException(ErrorMessages.ARB_101_USER_NOT_FOUND.name())
+        );
+    }
 
     private AcmeUserDTO toAcmeUserDTO(AcmeUser acmeUser) {
         AcmeUserDTO dto = new AcmeUserDTO();
