@@ -10,7 +10,7 @@
             <column name="name" value="Elmer Fudd"/>
             <column name="role" value="USER"/>
             <column name="username" value="elmerfudd"/>
-            <column name="password" value="123"/>
+            <column name="password" value="$2a$10$djimFtNZ1Lh86afIHhE/yuJCF9HEIaIh4ZvZ7G/LlVoWHguUZk2fC"/>
         </insert>
         <insert tableName="bookings">
             <column name="room" value="MAIN_CONFERENCE_ROOM"/>

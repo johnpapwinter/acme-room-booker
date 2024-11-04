@@ -53,6 +53,7 @@ public class BookingServiceImpl implements BookingService {
         isTimeRounded(dto);
         isDurationValid(dto);
         hasOverlap(dto);
+        hasConflictingBooking(dto);
 
         Booking booking = new Booking();
         booking.setRoom(dto.getRoom());
@@ -104,7 +105,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     /**
-     * Closes all conducted meetings by setting their status to COMPLETED.
+     * Closes all conducted meetings by setting their status to "COMPLETED".
      */
     @Override
     @Transactional
@@ -127,9 +128,20 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void canCancel(Booking booking) {
-        if (booking.getBookingDate().isBefore(LocalDate.now())) {
+        if (!booking.getStatus().equals(MeetingStatus.SCHEDULED)) {
+//        if (booking.getBookingDate().isBefore(LocalDate.now())) {
             throw new BookingException(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING.name());
         }
+    }
+
+    private void hasConflictingBooking(BookingDTO dto) {
+        bookingRepository.findBookingByBookedByAndBookingDateAndStartTimeAfterAndEndTimeBefore(
+                dto.getBookedBy(), dto.getBookingDate(), dto.getStartTime(), dto.getEndTime()
+        ).ifPresent(
+                value -> {
+                    throw new BookingException(ErrorMessages.ARB_007_HAS_A_CONFLICTING_BOOKING.name());
+                }
+        );
     }
 
     private void isDurationValid(BookingDTO dto) {

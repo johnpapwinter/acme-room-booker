@@ -14,5 +14,8 @@ public class ValidationErrorMessages {
     public static final String ARB1007_NAME_IS_REQUIRED = "NAME_IS_REQUIRED";
     public static final String ARB1008_EMAIL_IS_REQUIRED = "EMAIL_IS_REQUIRED";
     public static final String ARB1009_USERNAME_IS_REQUIRED = "USERNAME_IS_REQUIRED";
+    public static final String ARB1010_PASSWORD_IS_REQUIRED = "PASSWORD_IS_REQUIRED";
+    public static final String ARB1011_PASSWORDS_DO_NOT_MATCH = "PASSWORDS_DO_NOT_MATCH";
+    public static final String ARB1012_CONFIRMATION_PASSWORD_REQUIRED = "CONFIRMATION_PASSWORD_REQUIRED";
 
 }

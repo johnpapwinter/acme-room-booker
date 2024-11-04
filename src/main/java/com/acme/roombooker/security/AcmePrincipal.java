@@ -14,13 +14,20 @@ public class AcmePrincipal implements UserDetails {
     private String username;
     private String password;
     @Getter
+    private String email;
+    @Getter
     private Long id;
     public Collection<? extends GrantedAuthority> authorities;
 
 
-    public AcmePrincipal(String username, String password, Long id, Collection<? extends GrantedAuthority> authorities) {
+    public AcmePrincipal(String username,
+                         String password,
+                         String email,
+                         Long id,
+                         Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.id = id;
         this.authorities = authorities;
     }

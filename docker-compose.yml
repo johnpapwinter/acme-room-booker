@@ -20,6 +20,9 @@ services:
       - APP_LOGGING_MAX_FILE_SIZE=100MB
       - APP_LOGGING_MAX_HISTORY=30
       - APP_LOGGING_TOTAL_SIZE_CAP=5GB
+      - APP_JWT_SECRET=super-secret-boom
+      - APP_JWT_ISSUER=acme
+      - APP_JWT_EXPIRATION=3600000
     networks:
       - app-network
 

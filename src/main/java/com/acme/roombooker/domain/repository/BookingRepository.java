@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -21,5 +22,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findAllByRoomAndBookingDateAndStartTimeBetween(Room room, LocalDate date, LocalTime start, LocalTime end);
 
     List<Booking> findAllByBookingDateBeforeAndStatus(LocalDate bookingDate, MeetingStatus status);
+
+    Optional<Booking> findBookingByBookedByAndBookingDateAndStartTimeAfterAndEndTimeBefore(String bookedBy,
+                                                                                           LocalDate bookingDate,
+                                                                                           LocalTime start,
+                                                                                           LocalTime end);
 
 }

@@ -31,6 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return AcmePrincipal.builder()
                 .username(acmeUser.getUsername())
                 .password(acmeUser.getPassword())
+                .email(acmeUser.getEmail())
                 .id(acmeUser.getId())
                 .authorities(authorities)
                 .build();
