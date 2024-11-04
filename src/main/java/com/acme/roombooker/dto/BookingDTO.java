@@ -1,6 +1,6 @@
 package com.acme.roombooker.dto;
 
-import com.acme.roombooker.domain.enums.Room;
+import com.acme.roombooker.domain.enums.MeetingRoom;
 import com.acme.roombooker.exception.ValidationErrorMessages;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +16,7 @@ public class BookingDTO {
     private Long id;
 
     @NotNull(message = ValidationErrorMessages.ARB1001_ROOM_IS_REQUIRED)
-    private Room room;
+    private MeetingRoom meetingRoom;
 
     @NotBlank(message = ValidationErrorMessages.ARB1002_MEETING_ORGANIZER_IS_REQUIRED)
     @Email(message = ValidationErrorMessages.ARB1003_INVALID_EMAIL_ADDRESS)

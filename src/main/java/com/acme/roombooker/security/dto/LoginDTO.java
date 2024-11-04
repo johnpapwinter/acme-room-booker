@@ -1,4 +1,4 @@
-package com.acme.roombooker.security;
+package com.acme.roombooker.security.dto;
 
 import com.acme.roombooker.exception.ValidationErrorMessages;
 import jakarta.validation.constraints.NotBlank;

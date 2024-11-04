@@ -56,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
         hasConflictingBooking(dto);
 
         Booking booking = new Booking();
-        booking.setRoom(dto.getRoom());
+        booking.setMeetingRoom(dto.getMeetingRoom());
         booking.setBookedBy(dto.getBookedBy());
         booking.setBookingDate(dto.getBookingDate());
         // since bookings are always on the top of the hour or half-hours and in order to avoid
@@ -100,7 +100,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional(readOnly = true)
     public Page<BookingDTO> search(SearchFiltersDTO filters, Pageable pageable) {
-        return bookingRepository.findAllByRoomAndBookingDate(filters.getRoom(), filters.getBookingDate(), pageable)
+        return bookingRepository.findAllByMeetingRoomAndBookingDate(filters.getMeetingRoom(), filters.getBookingDate(), pageable)
                 .map(this::toBookingDTO);
     }
 
@@ -119,7 +119,7 @@ public class BookingServiceImpl implements BookingService {
         BookingDTO dto = new BookingDTO();
         dto.setId(booking.getId());
         dto.setBookingDate(booking.getBookingDate());
-        dto.setRoom(booking.getRoom());
+        dto.setMeetingRoom(booking.getMeetingRoom());
         dto.setBookedBy(booking.getBookedBy());
         dto.setStartTime(booking.getStartTime());
         dto.setEndTime(booking.getEndTime());
@@ -162,8 +162,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void hasOverlap(BookingDTO dto) {
-        List<Booking> existingBookings = bookingRepository.findAllByRoomAndBookingDateAndStartTimeBetween(
-                dto.getRoom(),
+        List<Booking> existingBookings = bookingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(
+                dto.getMeetingRoom(),
                 dto.getBookingDate(),
                 dto.getStartTime(),
                 dto.getEndTime()

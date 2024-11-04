@@ -1,6 +1,9 @@
 package com.acme.roombooker.controller;
 
 import com.acme.roombooker.security.*;
+import com.acme.roombooker.security.dto.JwtResponseDTO;
+import com.acme.roombooker.security.dto.LoginDTO;
+import com.acme.roombooker.security.dto.RegistrationDTO;
 import com.acme.roombooker.service.AcmeUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -40,7 +42,7 @@ public class AuthController {
     public ResponseEntity<Long> register(@Valid @RequestBody RegistrationDTO dto) {
         Long response = userService.createAcmeUser(dto);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/login")
@@ -61,7 +63,7 @@ public class AuthController {
                 .roles(principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .build();
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok().body(responseDTO);
     }
 
 }

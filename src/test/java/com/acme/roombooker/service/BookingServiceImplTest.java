@@ -1,8 +1,8 @@
 package com.acme.roombooker.service;
 
 import com.acme.roombooker.domain.entity.Booking;
+import com.acme.roombooker.domain.enums.MeetingRoom;
 import com.acme.roombooker.domain.enums.MeetingStatus;
-import com.acme.roombooker.domain.enums.Room;
 import com.acme.roombooker.domain.repository.BookingRepository;
 import com.acme.roombooker.dto.BookingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
@@ -48,7 +48,7 @@ class BookingServiceImplTest {
     @BeforeEach
     void setUp() {
         validBookingDTO = new BookingDTO();
-        validBookingDTO.setRoom(Room.MAIN_CONFERENCE_ROOM);
+        validBookingDTO.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         validBookingDTO.setBookedBy("elmerfudd@acme.com");
         validBookingDTO.setBookingDate(LocalDate.now());
         validBookingDTO.setStartTime(LocalTime.of(10, 0));
@@ -56,7 +56,7 @@ class BookingServiceImplTest {
 
         validBooking1 = new Booking();
         validBooking1.setId(1L);
-        validBooking1.setRoom(Room.MAIN_CONFERENCE_ROOM);
+        validBooking1.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         validBooking1.setBookedBy("yoshemitesam@acme.com");
         validBooking1.setBookingDate(LocalDate.now());
         validBooking1.setStartTime(LocalTime.of(10, 0, 1));
@@ -65,7 +65,7 @@ class BookingServiceImplTest {
 
         validBooking2 = new Booking();
         validBooking2.setId(2L);
-        validBooking2.setRoom(Room.ELMER_FUDD_ROOM);
+        validBooking2.setMeetingRoom(MeetingRoom.ELMER_FUDD_ROOM);
         validBooking2.setBookedBy("wilecoyote@acme.com");
         validBooking2.setBookingDate(LocalDate.now());
         validBooking2.setStartTime(LocalTime.of(9, 30, 1));
@@ -94,7 +94,7 @@ class BookingServiceImplTest {
     @DisplayName("Should successfully add a new booking")
     void shouldAddBooking() {
         // given
-        when(bookingRepository.findAllByRoomAndBookingDateAndStartTimeBetween(any(), any(), any(), any()))
+        when(bookingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(any(), any(), any(), any()))
                 .thenReturn(Collections.emptyList());
         ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);
 
@@ -107,7 +107,7 @@ class BookingServiceImplTest {
 
         assertNotNull(result);
         assertEquals(validBookingDTO.getId(), result.getId());
-        assertEquals(validBookingDTO.getRoom(), result.getRoom());
+        assertEquals(validBookingDTO.getMeetingRoom(), result.getMeetingRoom());
         assertEquals(validBookingDTO.getBookingDate(), result.getBookingDate());
         assertEquals(validBookingDTO.getStartTime().plusSeconds(1), result.getStartTime());
         assertEquals(validBookingDTO.getEndTime(), result.getEndTime());
@@ -119,7 +119,7 @@ class BookingServiceImplTest {
     void shouldThrowExceptionForDuration() {
         // given
         BookingDTO dto = new BookingDTO();
-        dto.setRoom(Room.MAIN_CONFERENCE_ROOM);
+        dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         dto.setBookedBy("yoshemitesam@acme.com");
         dto.setBookingDate(LocalDate.now());
         dto.setStartTime(LocalTime.of(10, 0));
@@ -137,7 +137,7 @@ class BookingServiceImplTest {
     void shouldThrowExceptionForTime() {
         // given
         BookingDTO dto = new BookingDTO();
-        dto.setRoom(Room.MAIN_CONFERENCE_ROOM);
+        dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         dto.setBookedBy("yoshemitesam@acme.com");
         dto.setBookingDate(LocalDate.now());
         dto.setStartTime(LocalTime.of(10, 5));
@@ -154,7 +154,7 @@ class BookingServiceImplTest {
     @DisplayName("Should throw meeting overlap error")
     void shouldThrowExceptionForOverlap() {
         // given
-        when(bookingRepository.findAllByRoomAndBookingDateAndStartTimeBetween(any(), any(), any(), any()))
+        when(bookingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(any(), any(), any(), any()))
                 .thenReturn(Collections.singletonList(validBooking1));
 
         // when
@@ -215,12 +215,12 @@ class BookingServiceImplTest {
     void shouldSearchBookings() {
         // given
         SearchFiltersDTO filtersDTO = new SearchFiltersDTO();
-        filtersDTO.setRoom(Room.MAIN_CONFERENCE_ROOM);
+        filtersDTO.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         filtersDTO.setBookingDate(LocalDate.now());
         Pageable pageable = Pageable.unpaged();
 
         Page<Booking> bookingPage = new PageImpl<>(Collections.singletonList(validBooking1));
-        when(bookingRepository.findAllByRoomAndBookingDate(Room.MAIN_CONFERENCE_ROOM, LocalDate.now(), pageable))
+        when(bookingRepository.findAllByMeetingRoomAndBookingDate(MeetingRoom.MAIN_CONFERENCE_ROOM, LocalDate.now(), pageable))
                 .thenReturn(bookingPage);
 
         // when
@@ -229,7 +229,7 @@ class BookingServiceImplTest {
         // then
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
-        verify(bookingRepository).findAllByRoomAndBookingDate(Room.MAIN_CONFERENCE_ROOM, LocalDate.now(), pageable);
+        verify(bookingRepository).findAllByMeetingRoomAndBookingDate(MeetingRoom.MAIN_CONFERENCE_ROOM, LocalDate.now(), pageable);
     }
 
     @Test

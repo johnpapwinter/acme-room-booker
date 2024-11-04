@@ -10,7 +10,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_bookings"/>
             </column>
-            <column name="room" type="VARCHAR(255)">
+            <column name="meetingRoom" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="booked_by" type="VARCHAR(255)">

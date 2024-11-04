@@ -13,7 +13,7 @@
             <column name="password" value="$2a$10$djimFtNZ1Lh86afIHhE/yuJCF9HEIaIh4ZvZ7G/LlVoWHguUZk2fC"/>
         </insert>
         <insert tableName="bookings">
-            <column name="room" value="MAIN_CONFERENCE_ROOM"/>
+            <column name="meetingRoom" value="MAIN_CONFERENCE_ROOM"/>
             <column name="booked_by" value="elmerfudd@acme.com"/>
             <column name="booking_date" valueDate="2024-10-12"/>
             <column name="start_time" valueDate="09:00:01"/>
@@ -22,7 +22,7 @@
             <column name="acme_user_id" value="1"/>
         </insert>
         <insert tableName="bookings">
-            <column name="room" value="MAIN_CONFERENCE_ROOM"/>
+            <column name="meetingRoom" value="MAIN_CONFERENCE_ROOM"/>
             <column name="booked_by" value="wilecoyote@acme.com"/>
             <column name="booking_date" valueDate="2024-10-13"/>
             <column name="start_time" valueDate="10:00:01"/>
@@ -31,7 +31,7 @@
             <column name="acme_user_id" value="1"/>
         </insert>
         <insert tableName="bookings">
-            <column name="room" value="WILE_E_COYOTE_ROOM"/>
+            <column name="meetingRoom" value="WILE_E_COYOTE_ROOM"/>
             <column name="booked_by" value="wilecoyote@acme.com"/>
             <column name="booking_date" valueDate="2024-10-12"/>
             <column name="start_time" valueDate="09:30:01"/>

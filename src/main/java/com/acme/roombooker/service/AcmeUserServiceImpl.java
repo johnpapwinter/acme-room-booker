@@ -6,7 +6,7 @@ import com.acme.roombooker.domain.repository.AcmeUserRepository;
 import com.acme.roombooker.dto.AcmeUserDTO;
 import com.acme.roombooker.exception.EntityNotFoundException;
 import com.acme.roombooker.exception.ErrorMessages;
-import com.acme.roombooker.security.RegistrationDTO;
+import com.acme.roombooker.security.dto.RegistrationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,6 +39,21 @@ public class AcmeUserServiceImpl implements AcmeUserService {
         return acmeUser.getId();
     }
 
+    @Override
+    @Transactional
+    public Long toggleAcmeUserRole(Long userId) {
+        AcmeUser acmeUser = acmeUserRepository.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException(ErrorMessages.ARB_101_USER_NOT_FOUND.name())
+        );
+
+        if (acmeUser.getRole().equals(AcmeRole.USER)) {
+            acmeUser.setRole(AcmeRole.ADMIN);
+        } else {
+            acmeUser.setRole(AcmeRole.USER);
+        }
+
+        return acmeUser.getId();
+    }
 
     @Override
     @Transactional(readOnly = true)

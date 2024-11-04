@@ -16,6 +16,7 @@ public class Scheduler {
     // at 01:00 every day
     @Scheduled(cron = "0 0 1 * * ?")
     public void closeAllConductedMeetings() {
+
         bookingService.closeConductedMeetings();
     }
 

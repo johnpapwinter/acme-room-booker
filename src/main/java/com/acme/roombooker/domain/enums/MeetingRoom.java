@@ -1,6 +1,6 @@
 package com.acme.roombooker.domain.enums;
 
-public enum Room {
+public enum MeetingRoom {
 
     MAIN_CONFERENCE_ROOM,
     WILE_E_COYOTE_ROOM,

@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.acme</groupId>
-    <artifactId>room-booker</artifactId>
+    <artifactId>meetingRoom-booker</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>room-booker</name>
-    <description>room-booker</description>
+    <name>meetingRoom-booker</name>
+    <description>meetingRoom-booker</description>
     <url/>
     <licenses>
         <license/>

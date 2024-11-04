@@ -1,6 +1,6 @@
 package com.acme.roombooker.integration;
 
-import com.acme.roombooker.domain.enums.Room;
+import com.acme.roombooker.domain.enums.MeetingRoom;
 import com.acme.roombooker.dto.BookingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,7 +58,7 @@ public class IntegrationTest {
     @DisplayName("Should book a meeting")
     void shouldBookMeeting() throws Exception {
         BookingDTO dto = new BookingDTO();
-        dto.setRoom(Room.MAIN_CONFERENCE_ROOM);
+        dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         dto.setBookedBy("elmerfudd@acme.com");
         dto.setBookingDate(LocalDate.of(2024, 10, 30));
         dto.setStartTime(LocalTime.of(19, 0, 0));
@@ -77,7 +77,7 @@ public class IntegrationTest {
     @DisplayName("Should cancel a booking")
     void shouldCancelBooking() throws Exception {
         BookingDTO dto = new BookingDTO();
-        dto.setRoom(Room.MAIN_CONFERENCE_ROOM);
+        dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         dto.setBookedBy("elmerfudd@acme.com");
         dto.setBookingDate(LocalDate.now());
         dto.setStartTime(LocalTime.of(9, 0, 0));
@@ -104,7 +104,7 @@ public class IntegrationTest {
     @DisplayName("Should search a booking")
     void shouldSearchBooking() throws Exception {
         SearchFiltersDTO filters = new SearchFiltersDTO();
-        filters.setRoom(Room.ELMER_FUDD_ROOM);
+        filters.setMeetingRoom(MeetingRoom.ELMER_FUDD_ROOM);
         filters.setBookingDate(LocalDate.of(2024, 10, 12));
 
         Pageable pageable = PageRequest.of(0, 10);
