@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    container_name: room-booker
+    container_name: acme-room-booker
     ports:
       - "8080:8080"
     depends_on:

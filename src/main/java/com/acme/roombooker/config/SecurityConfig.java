@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-//    @Profile("dev")
+    @Profile("dev")
     public SecurityFilterChain devFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(AbstractHttpConfigurer::disable)
@@ -33,22 +33,33 @@ public class SecurityConfig {
                 .build();
     }
 
-//    @Bean
-//    @Profile("prod")
-//    public SecurityFilterChain prodFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .cors(AbstractHttpConfigurer::disable)
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests(auth -> auth
-//                        .anyRequest()
-//                        .permitAll())
-//                .build();
-//    }
+    @Bean
+    @Profile("prod")
+    public SecurityFilterChain prodFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .cors(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/user/*")
+                        .hasAnyAuthority("ADMIN")
+                        .requestMatchers(
+                                "/api/cancel/*",
+                                "/api/book",
+                                "/api/get-all",
+                                "/api/search")
+                        .hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(
+                                "/api/auth/*")
+                        .permitAll())
+                .build();
+    }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
