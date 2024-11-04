@@ -8,8 +8,8 @@
         <insert tableName="acme_users">
             <column name="email" value="elmer@acme.com"/>
             <column name="name" value="Elmer Fudd"/>
-            <column name="role" value="USER"/>
-            <column name="username" value="elmerfudd"/>
+            <column name="role" value="ADMIN"/>
+            <column name="username" value="elmer"/>
             <column name="password" value="$2a$10$djimFtNZ1Lh86afIHhE/yuJCF9HEIaIh4ZvZ7G/LlVoWHguUZk2fC"/>
         </insert>
         <insert tableName="bookings">

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -56,7 +58,7 @@ public class AuthController {
                 .username(principal.getUsername())
                 .email(principal.getEmail())
                 .id(principal.getId())
-//                .roles(principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
+                .roles(principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .build();
 
         return ResponseEntity.ok(responseDTO);
