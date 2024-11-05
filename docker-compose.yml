@@ -9,11 +9,12 @@ services:
         condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/room_booking_db_dev
-      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/acme_room_booking_db_dev
+      - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - SPRING_LIQUIBASE_CHANGE_LOG=classpath:/db/changelog/db.changelog-master.xml
+      - SPRING_DATASOURCE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - SPRING_LIQUIBASE_ENABLED=true
       - APP_LOGGING_FILE_LOCATION=./src/main/resources/logs/info.log

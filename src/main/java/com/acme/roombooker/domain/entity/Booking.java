@@ -24,7 +24,7 @@ public class Booking implements Serializable {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "room", nullable = false)
+    @Column(name = "meetingroom", nullable = false)
     private MeetingRoom meetingRoom;
 
     @Column(name = "booked_by", nullable = false)
