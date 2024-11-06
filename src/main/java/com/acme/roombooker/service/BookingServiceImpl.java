@@ -1,5 +1,6 @@
 package com.acme.roombooker.service;
 
+import com.acme.roombooker.domain.entity.AcmeUser;
 import com.acme.roombooker.domain.entity.Booking;
 import com.acme.roombooker.domain.enums.MeetingStatus;
 import com.acme.roombooker.domain.repository.BookingRepository;
@@ -8,6 +9,7 @@ import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.exception.BookingException;
 import com.acme.roombooker.exception.EntityNotFoundException;
 import com.acme.roombooker.exception.ErrorMessages;
+import com.acme.roombooker.security.AcmePrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,10 +27,12 @@ public class BookingServiceImpl implements BookingService {
     private static final Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class);
 
     private final BookingRepository bookingRepository;
+    private final AcmeUserService acmeUserService;
 
 
-    public BookingServiceImpl(BookingRepository bookingRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository, AcmeUserService acmeUserService) {
         this.bookingRepository = bookingRepository;
+        this.acmeUserService = acmeUserService;
     }
 
     /**
@@ -45,25 +49,30 @@ public class BookingServiceImpl implements BookingService {
     /**
      * Adds a new booking based on the provided BookingDTO.
      * @param dto The BookingDTO object containing the booking details.
+     * @param acmePrincipal The current user accessing the method
      * @return The ID of the newly created booking.
      */
     @Override
     @Transactional
-    public Long addBooking(BookingDTO dto) {
+    public Long addBooking(BookingDTO dto, AcmePrincipal acmePrincipal) {
         isTimeRounded(dto);
         isDurationValid(dto);
         hasOverlap(dto);
         hasConflictingBooking(dto);
 
+        AcmeUser acmeUser = acmeUserService.findAcmeUserByUsername(acmePrincipal.getUsername());
+
         Booking booking = new Booking();
         booking.setMeetingRoom(dto.getMeetingRoom());
-        booking.setBookedBy(dto.getBookedBy());
+        booking.setBookedBy(acmeUser.getEmail());
         booking.setBookingDate(dto.getBookingDate());
         // since bookings are always on the top of the hour or half-hours and in order to avoid
         // overlap errors, we add 1 second to the start time, it could be nanos, but seconds will do in this case
         booking.setStartTime(dto.getStartTime().plusSeconds(1));
         booking.setEndTime(dto.getEndTime());
         booking.setStatus(MeetingStatus.SCHEDULED);
+        booking.setAcmeUser(acmeUser);
+        acmeUser.getBookings().add(booking);
 
         bookingRepository.save(booking);
 
@@ -128,8 +137,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void canCancel(Booking booking) {
-        if (!booking.getStatus().equals(MeetingStatus.SCHEDULED)) {
-//        if (booking.getBookingDate().isBefore(LocalDate.now())) {
+//        if (!booking.getStatus().equals(MeetingStatus.SCHEDULED)) {
+        if (booking.getBookingDate().isBefore(LocalDate.now())) {
             throw new BookingException(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING.name());
         }
     }

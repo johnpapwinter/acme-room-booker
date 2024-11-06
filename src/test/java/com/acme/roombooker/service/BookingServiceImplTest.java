@@ -1,6 +1,8 @@
 package com.acme.roombooker.service;
 
+import com.acme.roombooker.domain.entity.AcmeUser;
 import com.acme.roombooker.domain.entity.Booking;
+import com.acme.roombooker.domain.enums.AcmeRole;
 import com.acme.roombooker.domain.enums.MeetingRoom;
 import com.acme.roombooker.domain.enums.MeetingStatus;
 import com.acme.roombooker.domain.repository.BookingRepository;
@@ -9,6 +11,7 @@ import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.exception.BookingException;
 import com.acme.roombooker.exception.EntityNotFoundException;
 import com.acme.roombooker.exception.ErrorMessages;
+import com.acme.roombooker.security.AcmePrincipal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,12 +41,17 @@ class BookingServiceImplTest {
     @Mock
     private BookingRepository bookingRepository;
 
+    @Mock
+    private AcmeUserService acmeUserService;
+
     @InjectMocks
     private BookingServiceImpl bookingService;
 
     private BookingDTO validBookingDTO;
     private Booking validBooking1;
     private Booking validBooking2;
+    private AcmeUser acmeUser;
+    private AcmePrincipal acmePrincipal;
 
     @BeforeEach
     void setUp() {
@@ -71,6 +79,18 @@ class BookingServiceImplTest {
         validBooking2.setStartTime(LocalTime.of(9, 30, 1));
         validBooking2.setEndTime(LocalTime.of(10, 30));
         validBooking2.setStatus(MeetingStatus.SCHEDULED);
+
+        acmeUser = new AcmeUser();
+        acmeUser.setId(1L);
+        acmeUser.setEmail("elmerfudd@acme.com");
+        acmeUser.setUsername("elmer");
+        acmeUser.setRole(AcmeRole.ADMIN);
+
+        acmePrincipal = AcmePrincipal.builder()
+                .id(1L)
+                .username("elmer")
+                .email("elmerfudd@acme.com")
+                .build();
     }
 
     @Test
@@ -96,10 +116,11 @@ class BookingServiceImplTest {
         // given
         when(bookingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(any(), any(), any(), any()))
                 .thenReturn(Collections.emptyList());
+        when(acmeUserService.findAcmeUserByUsername(any())).thenReturn(acmeUser);
         ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);
 
         // when
-        bookingService.addBooking(validBookingDTO);
+        bookingService.addBooking(validBookingDTO, acmePrincipal);
 
         // then
         verify(bookingRepository).save(bookingCaptor.capture());
@@ -126,7 +147,7 @@ class BookingServiceImplTest {
         dto.setEndTime(LocalTime.of(11, 30));
 
         // when
-        BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto));
+        BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto, acmePrincipal));
 
         // then
         assertEquals(ErrorMessages.ARB_005_MEETING_DURATION_IS_NOT_VALID.name(), exception.getMessage());
@@ -144,7 +165,7 @@ class BookingServiceImplTest {
         dto.setEndTime(LocalTime.of(11, 0));
 
         // when
-        BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto));
+        BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto, acmePrincipal));
 
         // then
         assertEquals(ErrorMessages.ARB_004_MEETING_TIME_NOT_ROUNDED.name(), exception.getMessage());
@@ -158,7 +179,7 @@ class BookingServiceImplTest {
                 .thenReturn(Collections.singletonList(validBooking1));
 
         // when
-        BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(validBookingDTO));
+        BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(validBookingDTO, acmePrincipal));
 
         // then
         assertEquals(ErrorMessages.ARB_003_BOOKING_OVERLAP.name(), exception.getMessage());

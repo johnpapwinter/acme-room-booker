@@ -47,7 +47,7 @@ public class IntegrationTest {
     void shouldReturnPaginatedBookings() throws Exception {
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/get-all"))
+                .perform(MockMvcRequestBuilders.get("/api/meetings/get-all"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.hasSize(3)));
@@ -65,7 +65,7 @@ public class IntegrationTest {
         dto.setEndTime(LocalTime.of(20, 0, 0));
 
         mockMvc
-                .perform(MockMvcRequestBuilders.post("/api/book")
+                .perform(MockMvcRequestBuilders.post("/api/meetings/book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -84,7 +84,7 @@ public class IntegrationTest {
         dto.setEndTime(LocalTime.of(10, 0, 0));
 
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/book")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/meetings/book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -93,7 +93,7 @@ public class IntegrationTest {
         Long bookingId = Long.parseLong(result.getResponse().getContentAsString());
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/cancel/{id}", bookingId))
+                .perform(MockMvcRequestBuilders.get("/api/meetings/cancel/{id}", bookingId))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(bookingId));
@@ -110,7 +110,7 @@ public class IntegrationTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         mockMvc
-                .perform(MockMvcRequestBuilders.post("/api/search")
+                .perform(MockMvcRequestBuilders.post("/api/meetings/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(filters))
                         .param("page", String.valueOf(pageable.getPageNumber()))
@@ -126,7 +126,7 @@ public class IntegrationTest {
     void shouldReturnErrorForInvalidBookingDTO() throws Exception {
         BookingDTO dto = new BookingDTO(); // object empty, all required fields null
 
-        mockMvc.perform(post("/api/book")
+        mockMvc.perform(post("/api/meetings/book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
@@ -144,7 +144,7 @@ public class IntegrationTest {
     void shouldReturnErrorForInvalidSearchFilters() throws Exception {
         SearchFiltersDTO filtersDTO = new SearchFiltersDTO(); // object empty, all required fields null
 
-        mockMvc.perform(post("/api/search")
+        mockMvc.perform(post("/api/meetings/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(filtersDTO)))
                 .andExpect(status().isBadRequest())
