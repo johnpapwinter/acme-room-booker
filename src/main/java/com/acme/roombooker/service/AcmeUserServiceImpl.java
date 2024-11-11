@@ -43,7 +43,7 @@ public class AcmeUserServiceImpl implements AcmeUserService {
     @Transactional
     public Long toggleAcmeUserRole(Long userId) {
         AcmeUser acmeUser = acmeUserRepository.findById(userId).orElseThrow(
-                () -> new EntityNotFoundException(ErrorMessages.ARB_101_USER_NOT_FOUND.name())
+                () -> new EntityNotFoundException(ErrorMessages.ARB_101_USER_NOT_FOUND)
         );
 
         if (acmeUser.getRole().equals(AcmeRole.USER)) {
@@ -66,7 +66,7 @@ public class AcmeUserServiceImpl implements AcmeUserService {
     @Transactional(readOnly = true)
     public AcmeUser findAcmeUserByUsername(String username) {
         return acmeUserRepository.findByUsername(username).orElseThrow(
-                () -> new EntityNotFoundException(ErrorMessages.ARB_101_USER_NOT_FOUND.name())
+                () -> new EntityNotFoundException(ErrorMessages.ARB_101_USER_NOT_FOUND)
         );
     }
 

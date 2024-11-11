@@ -90,7 +90,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public BookingDTO cancelBooking(Long id) {
         Booking booking = bookingRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(ErrorMessages.ARB_001_BOOKING_NOT_FOUND.name())
+                () -> new EntityNotFoundException(ErrorMessages.ARB_001_BOOKING_NOT_FOUND)
         );
         canCancel(booking);
 
@@ -139,7 +139,7 @@ public class BookingServiceImpl implements BookingService {
     private void canCancel(Booking booking) {
 //        if (!booking.getStatus().equals(MeetingStatus.SCHEDULED)) {
         if (booking.getBookingDate().isBefore(LocalDate.now())) {
-            throw new BookingException(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING.name());
+            throw new BookingException(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING);
         }
     }
 
@@ -148,7 +148,7 @@ public class BookingServiceImpl implements BookingService {
                 dto.getBookedBy(), dto.getBookingDate(), dto.getStartTime(), dto.getEndTime()
         ).ifPresent(
                 value -> {
-                    throw new BookingException(ErrorMessages.ARB_007_HAS_A_CONFLICTING_BOOKING.name());
+                    throw new BookingException(ErrorMessages.ARB_007_HAS_A_CONFLICTING_BOOKING);
                 }
         );
     }
@@ -157,7 +157,7 @@ public class BookingServiceImpl implements BookingService {
         Duration duration = Duration.between(dto.getStartTime(), dto.getEndTime());
 
         if (duration.toMinutes() < 60 || duration.toMinutes() % 60 != 0) {
-            throw new BookingException(ErrorMessages.ARB_005_MEETING_DURATION_IS_NOT_VALID.name());
+            throw new BookingException(ErrorMessages.ARB_005_MEETING_DURATION_IS_NOT_VALID);
         }
     }
 
@@ -166,7 +166,7 @@ public class BookingServiceImpl implements BookingService {
         boolean endingTime = dto.getEndTime().getMinute() == 0 | dto.getEndTime().getMinute() == 30;
 
         if (!(startingTime && endingTime)) {
-            throw new BookingException(ErrorMessages.ARB_004_MEETING_TIME_NOT_ROUNDED.name());
+            throw new BookingException(ErrorMessages.ARB_004_MEETING_TIME_NOT_ROUNDED);
         }
     }
 
@@ -179,7 +179,7 @@ public class BookingServiceImpl implements BookingService {
         );
 
         if (!existingBookings.isEmpty()) {
-            throw new BookingException(ErrorMessages.ARB_003_BOOKING_OVERLAP.name());
+            throw new BookingException(ErrorMessages.ARB_003_BOOKING_OVERLAP);
         }
     }
 

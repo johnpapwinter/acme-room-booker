@@ -53,7 +53,7 @@ public class BookingExceptionHandler {
     @ExceptionHandler(InvalidFormatException.class)
     public ResponseEntity<ErrorMessageDTO> handleInvalidFormatException(InvalidFormatException exception) {
         ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(ErrorMessages.ARB_006_INVALID_DATA_INPUT.name());
+        error.setMessage(ErrorMessages.ARB_006_INVALID_DATA_INPUT);
         error.setTimestamp(LocalDateTime.now());
 
         logger.error(exception.getMessage(), exception);
@@ -68,7 +68,7 @@ public class BookingExceptionHandler {
         exception.printStackTrace();
 
         ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(ErrorMessages.ARB_501_CONTACT_YOUR_ADMINISTRATOR.name());
+        error.setMessage(ErrorMessages.ARB_501_CONTACT_YOUR_ADMINISTRATOR);
         error.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

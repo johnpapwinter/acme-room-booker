@@ -1,6 +1,6 @@
 package com.acme.roombooker.utils.validation;
 
-import com.acme.roombooker.exception.ValidationErrorMessages;
+import com.acme.roombooker.exception.ErrorMessages;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PasswordMatch {
-    String message() default ValidationErrorMessages.ARB1011_PASSWORDS_DO_NOT_MATCH;
+    String message() default ErrorMessages.ARB1011_PASSWORDS_DO_NOT_MATCH;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

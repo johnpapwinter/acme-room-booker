@@ -150,7 +150,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto, acmePrincipal));
 
         // then
-        assertEquals(ErrorMessages.ARB_005_MEETING_DURATION_IS_NOT_VALID.name(), exception.getMessage());
+        assertEquals(ErrorMessages.ARB_005_MEETING_DURATION_IS_NOT_VALID, exception.getMessage());
     }
 
     @Test
@@ -168,7 +168,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(dto, acmePrincipal));
 
         // then
-        assertEquals(ErrorMessages.ARB_004_MEETING_TIME_NOT_ROUNDED.name(), exception.getMessage());
+        assertEquals(ErrorMessages.ARB_004_MEETING_TIME_NOT_ROUNDED, exception.getMessage());
     }
 
     @Test
@@ -182,7 +182,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.addBooking(validBookingDTO, acmePrincipal));
 
         // then
-        assertEquals(ErrorMessages.ARB_003_BOOKING_OVERLAP.name(), exception.getMessage());
+        assertEquals(ErrorMessages.ARB_003_BOOKING_OVERLAP, exception.getMessage());
     }
 
     @Test
@@ -209,7 +209,7 @@ class BookingServiceImplTest {
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookingService.cancelBooking(1L));
 
         // then
-        assertEquals(ErrorMessages.ARB_001_BOOKING_NOT_FOUND.name(), exception.getMessage());
+        assertEquals(ErrorMessages.ARB_001_BOOKING_NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -227,7 +227,7 @@ class BookingServiceImplTest {
         BookingException exception = assertThrows(BookingException.class, () -> bookingService.cancelBooking(1L));
 
         // then
-        assertEquals(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING.name(), exception.getMessage());
+        assertEquals(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING, exception.getMessage());
     }
 
 
