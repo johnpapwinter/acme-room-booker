@@ -71,11 +71,11 @@ public class AcmeUserServiceImpl implements AcmeUserService {
     }
 
     private AcmeUserDTO toAcmeUserDTO(AcmeUser acmeUser) {
-        AcmeUserDTO dto = new AcmeUserDTO();
-        dto.setName(acmeUser.getName());
-        dto.setEmail(acmeUser.getEmail());
-        dto.setRole(acmeUser.getRole());
-        return dto;
+        return AcmeUserDTO.builder()
+                .name(acmeUser.getName())
+                .email(acmeUser.getEmail())
+                .role(acmeUser.getRole())
+                .build();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.acme.roombooker.controller;
 
-import com.acme.roombooker.dto.BookingDTO;
+import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.security.AcmePrincipal;
 import com.acme.roombooker.service.BookingService;
@@ -23,15 +23,14 @@ public class BookingController {
 
 
     @GetMapping("/get-all")
-    public ResponseEntity<Page<BookingDTO>> getAllBookings(Pageable pageable) {
-        Page<BookingDTO> response = bookingService.getAllBookings(pageable);
+    public ResponseEntity<Page<MeetingDTO>> getAllBookings(Pageable pageable) {
+        Page<MeetingDTO> response = bookingService.getAllBookings(pageable);
 
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping("/book")
-    public ResponseEntity<Long> bookMeeting(@Valid @RequestBody BookingDTO dto,
+    public ResponseEntity<Long> bookMeeting(@Valid @RequestBody MeetingDTO dto,
                                             @AuthenticationPrincipal AcmePrincipal acmePrincipal) {
         Long result = bookingService.addBooking(dto, acmePrincipal);
 
@@ -39,16 +38,16 @@ public class BookingController {
     }
 
     @GetMapping("/cancel/{id}")
-    public ResponseEntity<BookingDTO> cancelBooking(@PathVariable Long id) {
-        BookingDTO result = bookingService.cancelBooking(id);
+    public ResponseEntity<MeetingDTO> cancelBooking(@PathVariable Long id) {
+        MeetingDTO result = bookingService.cancelBooking(id);
 
         return ResponseEntity.ok().body(result);
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<BookingDTO>> searchBookings(@Valid @RequestBody SearchFiltersDTO filters,
+    public ResponseEntity<Page<MeetingDTO>> searchBookings(@Valid @RequestBody SearchFiltersDTO filters,
                                                            Pageable pageable) {
-        Page<BookingDTO> response = bookingService.search(filters, pageable);
+        Page<MeetingDTO> response = bookingService.search(filters, pageable);
 
         return ResponseEntity.ok(response);
     }

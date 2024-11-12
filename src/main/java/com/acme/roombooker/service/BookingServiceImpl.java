@@ -4,14 +4,12 @@ import com.acme.roombooker.domain.entity.AcmeUser;
 import com.acme.roombooker.domain.entity.Booking;
 import com.acme.roombooker.domain.enums.MeetingStatus;
 import com.acme.roombooker.domain.repository.BookingRepository;
-import com.acme.roombooker.dto.BookingDTO;
+import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.exception.BookingException;
 import com.acme.roombooker.exception.EntityNotFoundException;
 import com.acme.roombooker.exception.ErrorMessages;
 import com.acme.roombooker.security.AcmePrincipal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,8 +21,6 @@ import java.util.List;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-
-    private static final Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class);
 
     private final BookingRepository bookingRepository;
     private final AcmeUserService acmeUserService;
@@ -41,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
      * @return A Page of BookingDTO objects.
      */
     @Override
-    public Page<BookingDTO> getAllBookings(Pageable pageable) {
+    public Page<MeetingDTO> getAllBookings(Pageable pageable) {
         return bookingRepository.findAll(pageable)
                 .map(this::toBookingDTO);
     }
@@ -54,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     @Transactional
-    public Long addBooking(BookingDTO dto, AcmePrincipal acmePrincipal) {
+    public Long addBooking(MeetingDTO dto, AcmePrincipal acmePrincipal) {
         isTimeRounded(dto);
         isDurationValid(dto);
         hasOverlap(dto);
@@ -76,7 +72,6 @@ public class BookingServiceImpl implements BookingService {
 
         bookingRepository.save(booking);
 
-        logger.info("CREATED BOOKING WITH ID:{}", booking.getId());
         return booking.getId();
     }
 
@@ -88,7 +83,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     @Transactional
-    public BookingDTO cancelBooking(Long id) {
+    public MeetingDTO cancelBooking(Long id) {
         Booking booking = bookingRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(ErrorMessages.ARB_001_BOOKING_NOT_FOUND)
         );
@@ -96,7 +91,6 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(MeetingStatus.CANCELLED);
 
-        logger.info("CANCELLED BOOKING WITH ID:{}", booking.getId());
         return toBookingDTO(booking);
     }
 
@@ -108,7 +102,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<BookingDTO> search(SearchFiltersDTO filters, Pageable pageable) {
+    public Page<MeetingDTO> search(SearchFiltersDTO filters, Pageable pageable) {
         return bookingRepository.findAllByMeetingRoomAndBookingDate(filters.getMeetingRoom(), filters.getBookingDate(), pageable)
                 .map(this::toBookingDTO);
     }
@@ -121,29 +115,26 @@ public class BookingServiceImpl implements BookingService {
     public void closeConductedMeetings() {
         List<Booking> pastBookings = bookingRepository.findAllByBookingDateBeforeAndStatus(LocalDate.now(), MeetingStatus.SCHEDULED);
         pastBookings.forEach(booking -> booking.setStatus(MeetingStatus.COMPLETED));
-        logger.info("CLOSED {} PAST BOOKINGS", pastBookings.size());
     }
 
-    private BookingDTO toBookingDTO(Booking booking) {
-        BookingDTO dto = new BookingDTO();
-        dto.setId(booking.getId());
-        dto.setBookingDate(booking.getBookingDate());
-        dto.setMeetingRoom(booking.getMeetingRoom());
-        dto.setBookedBy(booking.getBookedBy());
-        dto.setStartTime(booking.getStartTime());
-        dto.setEndTime(booking.getEndTime());
-
-        return dto;
+    private MeetingDTO toBookingDTO(Booking booking) {
+        return MeetingDTO.builder()
+                .id(booking.getId())
+                .bookingDate(booking.getBookingDate())
+                .meetingRoom(booking.getMeetingRoom())
+                .bookedBy(booking.getBookedBy())
+                .startTime(booking.getStartTime())
+                .endTime(booking.getEndTime())
+                .build();
     }
 
     private void canCancel(Booking booking) {
-//        if (!booking.getStatus().equals(MeetingStatus.SCHEDULED)) {
         if (booking.getBookingDate().isBefore(LocalDate.now())) {
             throw new BookingException(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING);
         }
     }
 
-    private void hasConflictingBooking(BookingDTO dto) {
+    private void hasConflictingBooking(MeetingDTO dto) {
         bookingRepository.findBookingByBookedByAndBookingDateAndStartTimeAfterAndEndTimeBefore(
                 dto.getBookedBy(), dto.getBookingDate(), dto.getStartTime(), dto.getEndTime()
         ).ifPresent(
@@ -153,7 +144,7 @@ public class BookingServiceImpl implements BookingService {
         );
     }
 
-    private void isDurationValid(BookingDTO dto) {
+    private void isDurationValid(MeetingDTO dto) {
         Duration duration = Duration.between(dto.getStartTime(), dto.getEndTime());
 
         if (duration.toMinutes() < 60 || duration.toMinutes() % 60 != 0) {
@@ -161,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private void isTimeRounded(BookingDTO dto) {
+    private void isTimeRounded(MeetingDTO dto) {
         boolean startingTime = dto.getStartTime().getMinute() == 0 | dto.getStartTime().getMinute() == 30;
         boolean endingTime = dto.getEndTime().getMinute() == 0 | dto.getEndTime().getMinute() == 30;
 
@@ -170,7 +161,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private void hasOverlap(BookingDTO dto) {
+    private void hasOverlap(MeetingDTO dto) {
         List<Booking> existingBookings = bookingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(
                 dto.getMeetingRoom(),
                 dto.getBookingDate(),

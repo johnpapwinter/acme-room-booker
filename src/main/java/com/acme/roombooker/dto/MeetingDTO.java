@@ -5,13 +5,15 @@ import com.acme.roombooker.exception.ErrorMessages;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-public class BookingDTO {
+@Builder
+public class MeetingDTO {
 
     private Long id;
 

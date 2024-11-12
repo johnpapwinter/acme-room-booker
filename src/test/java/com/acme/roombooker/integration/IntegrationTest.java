@@ -1,7 +1,7 @@
 package com.acme.roombooker.integration;
 
 import com.acme.roombooker.domain.enums.MeetingRoom;
-import com.acme.roombooker.dto.BookingDTO;
+import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -57,7 +57,7 @@ public class IntegrationTest {
     @Test
     @DisplayName("Should book a meeting")
     void shouldBookMeeting() throws Exception {
-        BookingDTO dto = new BookingDTO();
+        MeetingDTO dto = new MeetingDTO();
         dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         dto.setBookedBy("elmerfudd@acme.com");
         dto.setBookingDate(LocalDate.of(2024, 10, 30));
@@ -76,7 +76,7 @@ public class IntegrationTest {
     @Test
     @DisplayName("Should cancel a booking")
     void shouldCancelBooking() throws Exception {
-        BookingDTO dto = new BookingDTO();
+        MeetingDTO dto = new MeetingDTO();
         dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
         dto.setBookedBy("elmerfudd@acme.com");
         dto.setBookingDate(LocalDate.now());
@@ -124,7 +124,7 @@ public class IntegrationTest {
     @Test
     @DisplayName("Should return an array of validation errors for invalid BookingDTO")
     void shouldReturnErrorForInvalidBookingDTO() throws Exception {
-        BookingDTO dto = new BookingDTO(); // object empty, all required fields null
+        MeetingDTO dto = new MeetingDTO(); // object empty, all required fields null
 
         mockMvc.perform(post("/api/meetings/book")
                         .contentType(MediaType.APPLICATION_JSON)

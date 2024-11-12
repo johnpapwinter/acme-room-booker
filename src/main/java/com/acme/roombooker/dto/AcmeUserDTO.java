@@ -1,9 +1,11 @@
 package com.acme.roombooker.dto;
 
 import com.acme.roombooker.domain.enums.AcmeRole;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class AcmeUserDTO {
 
     private String name;

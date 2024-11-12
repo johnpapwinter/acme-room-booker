@@ -1,6 +1,6 @@
 package com.acme.roombooker.service;
 
-import com.acme.roombooker.dto.BookingDTO;
+import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.security.AcmePrincipal;
 import org.springframework.data.domain.Page;
@@ -8,13 +8,13 @@ import org.springframework.data.domain.Pageable;
 
 public interface BookingService {
 
-    Page<BookingDTO> getAllBookings(Pageable pageable);
+    Page<MeetingDTO> getAllBookings(Pageable pageable);
 
-    Long addBooking(BookingDTO dto, AcmePrincipal acmePrincipal);
+    Long addBooking(MeetingDTO dto, AcmePrincipal acmePrincipal);
 
-    BookingDTO cancelBooking(Long id);
+    MeetingDTO cancelBooking(Long id);
 
-    Page<BookingDTO> search(SearchFiltersDTO filters, Pageable pageable);
+    Page<MeetingDTO> search(SearchFiltersDTO filters, Pageable pageable);
 
     void closeConductedMeetings();
 
