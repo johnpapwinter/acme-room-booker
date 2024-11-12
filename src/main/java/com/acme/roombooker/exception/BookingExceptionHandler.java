@@ -20,22 +20,26 @@ public class BookingExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorMessageDTO> handleEntityNotFoundException(EntityNotFoundException exception) {
-        ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(exception.getMessage());
-        error.setTimestamp(LocalDateTime.now());
+        ErrorMessageDTO errorDTO = ErrorMessageDTO.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .message(exception.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
 
         logger.error(exception.getMessage(), exception);
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BookingException.class)
     public ResponseEntity<ErrorMessageDTO> handleBookingException(BookingException exception) {
-        ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(exception.getMessage());
-        error.setTimestamp(LocalDateTime.now());
+        ErrorMessageDTO errorDTO = ErrorMessageDTO.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(exception.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
 
         logger.error(exception.getMessage(), exception);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -52,12 +56,14 @@ public class BookingExceptionHandler {
 
     @ExceptionHandler(InvalidFormatException.class)
     public ResponseEntity<ErrorMessageDTO> handleInvalidFormatException(InvalidFormatException exception) {
-        ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(ErrorMessages.ARB_006_INVALID_DATA_INPUT);
-        error.setTimestamp(LocalDateTime.now());
+        ErrorMessageDTO errorDTO = ErrorMessageDTO.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(ErrorMessages.ARB_006_INVALID_DATA_INPUT)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         logger.error(exception.getMessage(), exception);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -67,11 +73,13 @@ public class BookingExceptionHandler {
     public ResponseEntity<ErrorMessageDTO> handleException(Exception exception) {
         exception.printStackTrace();
 
-        ErrorMessageDTO error = new ErrorMessageDTO();
-        error.setMessage(ErrorMessages.ARB_501_CONTACT_YOUR_ADMINISTRATOR);
-        error.setTimestamp(LocalDateTime.now());
+        ErrorMessageDTO errorDTO = ErrorMessageDTO.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .message(ErrorMessages.ARB_501_CONTACT_YOUR_ADMINISTRATOR)
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
