@@ -57,12 +57,13 @@ public class IntegrationTest {
     @Test
     @DisplayName("Should book a meeting")
     void shouldBookMeeting() throws Exception {
-        MeetingDTO dto = new MeetingDTO();
-        dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
-        dto.setBookedBy("elmerfudd@acme.com");
-        dto.setBookingDate(LocalDate.of(2024, 10, 30));
-        dto.setStartTime(LocalTime.of(19, 0, 0));
-        dto.setEndTime(LocalTime.of(20, 0, 0));
+        MeetingDTO dto = MeetingDTO.builder()
+                .meetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM)
+                .bookedBy("elmerfudd@acme.com")
+                .bookingDate(LocalDate.of(2024, 10, 30))
+                .startTime(LocalTime.of(19, 0, 0))
+                .endTime(LocalTime.of(20, 0, 0))
+                .build();
 
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/api/meetings/book")
@@ -76,12 +77,13 @@ public class IntegrationTest {
     @Test
     @DisplayName("Should cancel a booking")
     void shouldCancelBooking() throws Exception {
-        MeetingDTO dto = new MeetingDTO();
-        dto.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
-        dto.setBookedBy("elmerfudd@acme.com");
-        dto.setBookingDate(LocalDate.now());
-        dto.setStartTime(LocalTime.of(9, 0, 0));
-        dto.setEndTime(LocalTime.of(10, 0, 0));
+        MeetingDTO dto = MeetingDTO.builder()
+                .meetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM)
+                .bookedBy("elmerfudd@acme.com")
+                .bookingDate(LocalDate.now())
+                .startTime(LocalTime.of(9, 0, 0))
+                .endTime(LocalTime.of(10, 0, 0))
+                .build();
 
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/meetings/book")
@@ -124,7 +126,13 @@ public class IntegrationTest {
     @Test
     @DisplayName("Should return an array of validation errors for invalid BookingDTO")
     void shouldReturnErrorForInvalidBookingDTO() throws Exception {
-        MeetingDTO dto = new MeetingDTO(); // object empty, all required fields null
+        MeetingDTO dto = MeetingDTO.builder() // object empty, all required fields null
+                .meetingRoom(null)
+                .bookedBy(null)
+                .bookingDate(null)
+                .startTime(null)
+                .endTime(null)
+                .build();
 
         mockMvc.perform(post("/api/meetings/book")
                         .contentType(MediaType.APPLICATION_JSON)

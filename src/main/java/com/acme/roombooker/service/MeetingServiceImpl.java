@@ -1,9 +1,9 @@
 package com.acme.roombooker.service;
 
 import com.acme.roombooker.domain.entity.AcmeUser;
-import com.acme.roombooker.domain.entity.Booking;
+import com.acme.roombooker.domain.entity.Meeting;
 import com.acme.roombooker.domain.enums.MeetingStatus;
-import com.acme.roombooker.domain.repository.BookingRepository;
+import com.acme.roombooker.domain.repository.MeetingRepository;
 import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.exception.BookingException;
@@ -20,14 +20,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class BookingServiceImpl implements BookingService {
+public class MeetingServiceImpl implements MeetingService {
 
-    private final BookingRepository bookingRepository;
+    private final MeetingRepository meetingRepository;
     private final AcmeUserService acmeUserService;
 
 
-    public BookingServiceImpl(BookingRepository bookingRepository, AcmeUserService acmeUserService) {
-        this.bookingRepository = bookingRepository;
+    public MeetingServiceImpl(MeetingRepository meetingRepository, AcmeUserService acmeUserService) {
+        this.meetingRepository = meetingRepository;
         this.acmeUserService = acmeUserService;
     }
 
@@ -37,9 +37,9 @@ public class BookingServiceImpl implements BookingService {
      * @return A Page of BookingDTO objects.
      */
     @Override
-    public Page<MeetingDTO> getAllBookings(Pageable pageable) {
-        return bookingRepository.findAll(pageable)
-                .map(this::toBookingDTO);
+    public Page<MeetingDTO> getAllMeetings(Pageable pageable) {
+        return meetingRepository.findAll(pageable)
+                .map(this::toMeetingDTO);
     }
 
     /**
@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     @Transactional
-    public Long addBooking(MeetingDTO dto, AcmePrincipal acmePrincipal) {
+    public Long addMeeting(MeetingDTO dto, AcmePrincipal acmePrincipal) {
         isTimeRounded(dto);
         isDurationValid(dto);
         hasOverlap(dto);
@@ -58,21 +58,21 @@ public class BookingServiceImpl implements BookingService {
 
         AcmeUser acmeUser = acmeUserService.findAcmeUserByUsername(acmePrincipal.getUsername());
 
-        Booking booking = new Booking();
-        booking.setMeetingRoom(dto.getMeetingRoom());
-        booking.setBookedBy(acmeUser.getEmail());
-        booking.setBookingDate(dto.getBookingDate());
+        Meeting meeting = new Meeting();
+        meeting.setMeetingRoom(dto.getMeetingRoom());
+        meeting.setBookedBy(acmeUser.getEmail());
+        meeting.setBookingDate(dto.getBookingDate());
         // since bookings are always on the top of the hour or half-hours and in order to avoid
         // overlap errors, we add 1 second to the start time, it could be nanos, but seconds will do in this case
-        booking.setStartTime(dto.getStartTime().plusSeconds(1));
-        booking.setEndTime(dto.getEndTime());
-        booking.setStatus(MeetingStatus.SCHEDULED);
-        booking.setAcmeUser(acmeUser);
-        acmeUser.getBookings().add(booking);
+        meeting.setStartTime(dto.getStartTime().plusSeconds(1));
+        meeting.setEndTime(dto.getEndTime());
+        meeting.setStatus(MeetingStatus.SCHEDULED);
+        meeting.setAcmeUser(acmeUser);
+        acmeUser.getMeetings().add(meeting);
 
-        bookingRepository.save(booking);
+        meetingRepository.save(meeting);
 
-        return booking.getId();
+        return meeting.getId();
     }
 
     /**
@@ -83,15 +83,15 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     @Transactional
-    public MeetingDTO cancelBooking(Long id) {
-        Booking booking = bookingRepository.findById(id).orElseThrow(
+    public MeetingDTO cancelMeeting(Long id) {
+        Meeting meeting = meetingRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(ErrorMessages.ARB_001_BOOKING_NOT_FOUND)
         );
-        canCancel(booking);
+        canCancel(meeting);
 
-        booking.setStatus(MeetingStatus.CANCELLED);
+        meeting.setStatus(MeetingStatus.CANCELLED);
 
-        return toBookingDTO(booking);
+        return toMeetingDTO(meeting);
     }
 
     /**
@@ -103,8 +103,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional(readOnly = true)
     public Page<MeetingDTO> search(SearchFiltersDTO filters, Pageable pageable) {
-        return bookingRepository.findAllByMeetingRoomAndBookingDate(filters.getMeetingRoom(), filters.getBookingDate(), pageable)
-                .map(this::toBookingDTO);
+        return meetingRepository.findAllByMeetingRoomAndBookingDate(filters.getMeetingRoom(), filters.getBookingDate(), pageable)
+                .map(this::toMeetingDTO);
     }
 
     /**
@@ -113,29 +113,29 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public void closeConductedMeetings() {
-        List<Booking> pastBookings = bookingRepository.findAllByBookingDateBeforeAndStatus(LocalDate.now(), MeetingStatus.SCHEDULED);
-        pastBookings.forEach(booking -> booking.setStatus(MeetingStatus.COMPLETED));
+        List<Meeting> pastMeetings = meetingRepository.findAllByBookingDateBeforeAndStatus(LocalDate.now(), MeetingStatus.SCHEDULED);
+        pastMeetings.forEach(booking -> booking.setStatus(MeetingStatus.COMPLETED));
     }
 
-    private MeetingDTO toBookingDTO(Booking booking) {
+    private MeetingDTO toMeetingDTO(Meeting meeting) {
         return MeetingDTO.builder()
-                .id(booking.getId())
-                .bookingDate(booking.getBookingDate())
-                .meetingRoom(booking.getMeetingRoom())
-                .bookedBy(booking.getBookedBy())
-                .startTime(booking.getStartTime())
-                .endTime(booking.getEndTime())
+                .id(meeting.getId())
+                .bookingDate(meeting.getBookingDate())
+                .meetingRoom(meeting.getMeetingRoom())
+                .bookedBy(meeting.getBookedBy())
+                .startTime(meeting.getStartTime())
+                .endTime(meeting.getEndTime())
                 .build();
     }
 
-    private void canCancel(Booking booking) {
-        if (booking.getBookingDate().isBefore(LocalDate.now())) {
+    private void canCancel(Meeting meeting) {
+        if (meeting.getBookingDate().isBefore(LocalDate.now())) {
             throw new BookingException(ErrorMessages.ARB_002_CANNOT_CANCEL_PAST_BOOKING);
         }
     }
 
     private void hasConflictingBooking(MeetingDTO dto) {
-        bookingRepository.findBookingByBookedByAndBookingDateAndStartTimeAfterAndEndTimeBefore(
+        meetingRepository.findBookingByBookedByAndBookingDateAndStartTimeAfterAndEndTimeBefore(
                 dto.getBookedBy(), dto.getBookingDate(), dto.getStartTime(), dto.getEndTime()
         ).ifPresent(
                 value -> {
@@ -162,14 +162,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void hasOverlap(MeetingDTO dto) {
-        List<Booking> existingBookings = bookingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(
+        List<Meeting> existingMeetings = meetingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(
                 dto.getMeetingRoom(),
                 dto.getBookingDate(),
                 dto.getStartTime(),
                 dto.getEndTime()
         );
 
-        if (!existingBookings.isEmpty()) {
+        if (!existingMeetings.isEmpty()) {
             throw new BookingException(ErrorMessages.ARB_003_BOOKING_OVERLAP);
         }
     }

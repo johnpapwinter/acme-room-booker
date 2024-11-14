@@ -13,10 +13,10 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "bookings")
+@Table(name = "meetings")
 @Getter
 @Setter
-public class Booking implements Serializable {
+public class Meeting implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Booking implements Serializable {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "meetingroom", nullable = false)
+    @Column(name = "meeting_room", nullable = false)
     private MeetingRoom meetingRoom;
 
     @Column(name = "booked_by", nullable = false)
@@ -52,8 +52,8 @@ public class Booking implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Booking booking = (Booking) o;
-        return Objects.equals(id, booking.id);
+        Meeting meeting = (Meeting) o;
+        return Objects.equals(id, meeting.id);
     }
 
     @Override

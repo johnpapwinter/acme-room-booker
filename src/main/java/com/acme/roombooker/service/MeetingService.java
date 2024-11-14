@@ -6,13 +6,13 @@ import com.acme.roombooker.security.AcmePrincipal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface BookingService {
+public interface MeetingService {
 
-    Page<MeetingDTO> getAllBookings(Pageable pageable);
+    Page<MeetingDTO> getAllMeetings(Pageable pageable);
 
-    Long addBooking(MeetingDTO dto, AcmePrincipal acmePrincipal);
+    Long addMeeting(MeetingDTO dto, AcmePrincipal acmePrincipal);
 
-    MeetingDTO cancelBooking(Long id);
+    MeetingDTO cancelMeeting(Long id);
 
     Page<MeetingDTO> search(SearchFiltersDTO filters, Pageable pageable);
 

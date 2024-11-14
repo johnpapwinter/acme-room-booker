@@ -38,7 +38,7 @@ public class AcmeUser implements Serializable {
     private AcmeRole role;
 
     @OneToMany(mappedBy = "acmeUser")
-    private List<Booking> bookings = new ArrayList<>();
+    private List<Meeting> meetings = new ArrayList<>();
 
 
     @Override
