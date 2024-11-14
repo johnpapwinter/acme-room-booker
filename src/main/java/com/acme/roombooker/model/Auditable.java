@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 @EntityListeners(DefaultAuditListener.class)
-public abstract class Auditable<U> {
+public abstract class Auditable {
 
     @CreatedDate
     @Column(name = "created_date")
@@ -26,7 +26,7 @@ public abstract class Auditable<U> {
 
     @CreatedBy
     @Column(name = "created_by")
-    protected U createdBy;
+    protected String createdBy;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
@@ -34,6 +34,6 @@ public abstract class Auditable<U> {
 
     @LastModifiedBy
     @Column(name = "last_modified_by")
-    protected U lastModifiedBy;
+    protected String lastModifiedBy;
 
 }
