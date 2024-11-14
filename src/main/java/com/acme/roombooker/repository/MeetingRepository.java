@@ -1,8 +1,8 @@
-package com.acme.roombooker.domain.repository;
+package com.acme.roombooker.repository;
 
-import com.acme.roombooker.domain.entity.Meeting;
-import com.acme.roombooker.domain.enums.MeetingStatus;
-import com.acme.roombooker.domain.enums.MeetingRoom;
+import com.acme.roombooker.model.Meeting;
+import com.acme.roombooker.enums.MeetingStatus;
+import com.acme.roombooker.enums.MeetingRoom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

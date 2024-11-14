@@ -1,7 +1,7 @@
 package com.acme.roombooker.security.dto;
 
 import com.acme.roombooker.exception.ErrorMessages;
-import com.acme.roombooker.utils.validation.PasswordMatch;
+import com.acme.roombooker.utils.annotations.PasswordMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

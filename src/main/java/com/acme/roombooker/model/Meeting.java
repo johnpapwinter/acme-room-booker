@@ -1,7 +1,7 @@
-package com.acme.roombooker.domain.entity;
+package com.acme.roombooker.model;
 
-import com.acme.roombooker.domain.enums.MeetingRoom;
-import com.acme.roombooker.domain.enums.MeetingStatus;
+import com.acme.roombooker.enums.MeetingRoom;
+import com.acme.roombooker.enums.MeetingStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

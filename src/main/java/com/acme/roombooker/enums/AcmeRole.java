@@ -1,4 +1,4 @@
-package com.acme.roombooker.domain.enums;
+package com.acme.roombooker.enums;
 
 public enum AcmeRole {
 

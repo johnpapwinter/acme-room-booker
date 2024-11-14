@@ -1,15 +1,15 @@
 package com.acme.roombooker.service;
 
-import com.acme.roombooker.domain.entity.AcmeUser;
-import com.acme.roombooker.domain.enums.AcmeRole;
-import com.acme.roombooker.domain.repository.AcmeUserRepository;
+import com.acme.roombooker.model.AcmeUser;
+import com.acme.roombooker.enums.AcmeRole;
+import com.acme.roombooker.repository.AcmeUserRepository;
 import com.acme.roombooker.dto.AcmeUserDTO;
 import com.acme.roombooker.exception.EntityNotFoundException;
 import com.acme.roombooker.exception.ErrorMessages;
 import com.acme.roombooker.security.dto.RegistrationDTO;
+import com.acme.roombooker.utils.mappers.AcmeUserMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,23 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class AcmeUserServiceImpl implements AcmeUserService {
 
     private final AcmeUserRepository acmeUserRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AcmeUserMapper mapper;
 
-    public AcmeUserServiceImpl(AcmeUserRepository acmeUserRepository, PasswordEncoder passwordEncoder) {
+    public AcmeUserServiceImpl(AcmeUserRepository acmeUserRepository, AcmeUserMapper mapper) {
         this.acmeUserRepository = acmeUserRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.mapper = mapper;
     }
 
     @Override
     @Transactional
     public Long createAcmeUser(RegistrationDTO dto) {
-        AcmeUser acmeUser = new AcmeUser();
-        acmeUser.setName(dto.getName());
-        acmeUser.setUsername(dto.getUsername());
-        acmeUser.setEmail(dto.getEmail());
-        acmeUser.setRole(AcmeRole.USER); // default role
-        acmeUser.setPassword(passwordEncoder.encode(dto.getPassword()));
-
+        AcmeUser acmeUser = mapper.toAcmeUserEntity(dto);
 
         acmeUserRepository.save(acmeUser);
         return acmeUser.getId();
@@ -59,7 +53,7 @@ public class AcmeUserServiceImpl implements AcmeUserService {
     @Transactional(readOnly = true)
     public Page<AcmeUserDTO> getAcmeUsers(Pageable pageable) {
         return acmeUserRepository.findAll(pageable)
-                .map(this::toAcmeUserDTO);
+                .map(mapper::toAcmeUserDTO);
     }
 
     @Override
@@ -68,14 +62,6 @@ public class AcmeUserServiceImpl implements AcmeUserService {
         return acmeUserRepository.findByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException(ErrorMessages.ARB_101_USER_NOT_FOUND)
         );
-    }
-
-    private AcmeUserDTO toAcmeUserDTO(AcmeUser acmeUser) {
-        return AcmeUserDTO.builder()
-                .name(acmeUser.getName())
-                .email(acmeUser.getEmail())
-                .role(acmeUser.getRole())
-                .build();
     }
 
 }

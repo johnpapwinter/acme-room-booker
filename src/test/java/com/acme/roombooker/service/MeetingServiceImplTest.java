@@ -1,11 +1,11 @@
 package com.acme.roombooker.service;
 
-import com.acme.roombooker.domain.entity.AcmeUser;
-import com.acme.roombooker.domain.entity.Meeting;
-import com.acme.roombooker.domain.enums.AcmeRole;
-import com.acme.roombooker.domain.enums.MeetingRoom;
-import com.acme.roombooker.domain.enums.MeetingStatus;
-import com.acme.roombooker.domain.repository.MeetingRepository;
+import com.acme.roombooker.model.AcmeUser;
+import com.acme.roombooker.model.Meeting;
+import com.acme.roombooker.enums.AcmeRole;
+import com.acme.roombooker.enums.MeetingRoom;
+import com.acme.roombooker.enums.MeetingStatus;
+import com.acme.roombooker.repository.MeetingRepository;
 import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.acme.roombooker.exception.BookingException;

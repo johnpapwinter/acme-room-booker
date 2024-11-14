@@ -1,4 +1,4 @@
-package com.acme.roombooker.utils.validation;
+package com.acme.roombooker.utils.annotations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

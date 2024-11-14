@@ -1,6 +1,6 @@
-package com.acme.roombooker.domain.repository;
+package com.acme.roombooker.repository;
 
-import com.acme.roombooker.domain.entity.AcmeUser;
+import com.acme.roombooker.model.AcmeUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

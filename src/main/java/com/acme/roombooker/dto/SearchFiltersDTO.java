@@ -1,6 +1,6 @@
 package com.acme.roombooker.dto;
 
-import com.acme.roombooker.domain.enums.MeetingRoom;
+import com.acme.roombooker.enums.MeetingRoom;
 import com.acme.roombooker.exception.ErrorMessages;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

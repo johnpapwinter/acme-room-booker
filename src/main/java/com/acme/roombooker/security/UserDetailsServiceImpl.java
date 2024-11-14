@@ -1,6 +1,6 @@
 package com.acme.roombooker.security;
 
-import com.acme.roombooker.domain.entity.AcmeUser;
+import com.acme.roombooker.model.AcmeUser;
 import com.acme.roombooker.service.AcmeUserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

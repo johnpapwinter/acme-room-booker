@@ -1,6 +1,6 @@
 package com.acme.roombooker.dto;
 
-import com.acme.roombooker.domain.enums.AcmeRole;
+import com.acme.roombooker.enums.AcmeRole;
 import lombok.Builder;
 import lombok.Data;
 

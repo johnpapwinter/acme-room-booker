@@ -1,6 +1,6 @@
 package com.acme.roombooker.service;
 
-import com.acme.roombooker.domain.entity.AcmeUser;
+import com.acme.roombooker.model.AcmeUser;
 import com.acme.roombooker.dto.AcmeUserDTO;
 import com.acme.roombooker.security.dto.RegistrationDTO;
 import org.springframework.data.domain.Page;

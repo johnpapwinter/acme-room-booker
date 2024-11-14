@@ -1,6 +1,6 @@
 package com.acme.roombooker.integration;
 
-import com.acme.roombooker.domain.enums.MeetingRoom;
+import com.acme.roombooker.enums.MeetingRoom;
 import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;

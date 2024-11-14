@@ -1,4 +1,4 @@
-package com.acme.roombooker.utils.validation;
+package com.acme.roombooker.utils.annotations;
 
 import com.acme.roombooker.exception.ErrorMessages;
 import jakarta.validation.Constraint;
