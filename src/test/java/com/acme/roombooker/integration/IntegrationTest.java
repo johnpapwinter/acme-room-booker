@@ -43,8 +43,8 @@ public class IntegrationTest {
 
 
     @Test
-    @DisplayName("Should return paginated bookings with a 200 status")
-    void shouldReturnPaginatedBookings() throws Exception {
+    @DisplayName("Should return paginated meetings with a 200 status")
+    void getAllMeetings_ShouldReturnPaginatedMeetings() throws Exception {
 
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/api/meetings/get-all"))
@@ -56,7 +56,7 @@ public class IntegrationTest {
 
     @Test
     @DisplayName("Should book a meeting")
-    void shouldBookMeeting() throws Exception {
+    void bookMeeting_ShouldBookNewMeeting() throws Exception {
         MeetingDTO dto = MeetingDTO.builder()
                 .meetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM)
                 .bookedBy("elmerfudd@acme.com")
@@ -75,8 +75,8 @@ public class IntegrationTest {
     }
 
     @Test
-    @DisplayName("Should cancel a booking")
-    void shouldCancelBooking() throws Exception {
+    @DisplayName("Should cancel a meeting")
+    void cancelMeeting_ShouldCancelExistingMeeting() throws Exception {
         MeetingDTO dto = MeetingDTO.builder()
                 .meetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM)
                 .bookedBy("elmerfudd@acme.com")
@@ -103,8 +103,8 @@ public class IntegrationTest {
     }
 
     @Test
-    @DisplayName("Should search a booking")
-    void shouldSearchBooking() throws Exception {
+    @DisplayName("Should search a meeting and return findings")
+    void searchMeeting_ShouldReturnFoundMeetings() throws Exception {
         SearchFiltersDTO filters = new SearchFiltersDTO();
         filters.setMeetingRoom(MeetingRoom.ELMER_FUDD_ROOM);
         filters.setBookingDate(LocalDate.of(2024, 10, 12));
@@ -125,7 +125,7 @@ public class IntegrationTest {
 
     @Test
     @DisplayName("Should return an array of validation errors for invalid BookingDTO")
-    void shouldReturnErrorForInvalidBookingDTO() throws Exception {
+    void bookMeeting_ShouldReturnErrorForInvalidDTO() throws Exception {
         MeetingDTO dto = MeetingDTO.builder() // object empty, all required fields null
                 .meetingRoom(null)
                 .bookedBy(null)
@@ -149,7 +149,7 @@ public class IntegrationTest {
 
     @Test
     @DisplayName("Should return an array of validation errors for invalid search filters")
-    void shouldReturnErrorForInvalidSearchFilters() throws Exception {
+    void searchMeetings_ShouldReturnErrorForInvalidSearchFilters() throws Exception {
         SearchFiltersDTO filtersDTO = new SearchFiltersDTO(); // object empty, all required fields null
 
         mockMvc.perform(post("/api/meetings/search")
