@@ -97,8 +97,8 @@ class MeetingServiceImplTest {
 
     @Test
     @Disabled
-    @DisplayName("Should return a pageable with bookings")
-    void shouldGetAllMeetings() {
+    @DisplayName("Should return a pageable with meetings")
+    void getAllMeetings_ShouldReturnPageableOfMeetings() {
         // given
         Pageable pageable = Pageable.unpaged();
         Page<Meeting> bookingPage = new PageImpl<>(Arrays.asList(validMeeting1, validMeeting2));
@@ -115,8 +115,8 @@ class MeetingServiceImplTest {
 
     @Test
     @Disabled
-    @DisplayName("Should successfully add a new booking")
-    void shouldAddMeeting() {
+    @DisplayName("Should successfully add a new meeting")
+    void addMeeting_ShouldAddNewMeeting() {
         // given
         when(meetingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(any(), any(), any(), any()))
                 .thenReturn(Collections.emptyList());
@@ -142,7 +142,7 @@ class MeetingServiceImplTest {
     @Test
     @Disabled
     @DisplayName("Should throw invalid duration error")
-    void shouldThrowExceptionForDuration() {
+    void addMeeting_ShouldThrowExceptionForInvalidDuration() {
         // given
         MeetingDTO dto = MeetingDTO.builder()
                 .meetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM)
@@ -162,7 +162,7 @@ class MeetingServiceImplTest {
     @Test
     @Disabled
     @DisplayName("Should throw invalid time error")
-    void shouldThrowExceptionForTime() {
+    void addMeeting_ShouldThrowExceptionForInvalidTime() {
         // given
         MeetingDTO dto = MeetingDTO.builder()
                 .meetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM)
@@ -182,7 +182,7 @@ class MeetingServiceImplTest {
     @Test
     @Disabled
     @DisplayName("Should throw meeting overlap error")
-    void shouldThrowExceptionForOverlap() {
+    void addMeeting_ShouldThrowExceptionForTimeOverlap() {
         // given
         when(meetingRepository.findAllByMeetingRoomAndBookingDateAndStartTimeBetween(any(), any(), any(), any()))
                 .thenReturn(Collections.singletonList(validMeeting1));
@@ -196,8 +196,8 @@ class MeetingServiceImplTest {
 
     @Test
     @Disabled
-    @DisplayName("Should successfully cancel an existing booking")
-    void shouldCancelMeeting() {
+    @DisplayName("Should successfully cancel an existing meeting")
+    void cancelMeeting_ShouldSuccessfullyCancelExistingMeeting() {
         // given
         when(meetingRepository.findById(1L)).thenReturn(Optional.of(validMeeting1));
 
@@ -211,8 +211,8 @@ class MeetingServiceImplTest {
 
     @Test
     @Disabled
-    @DisplayName("Should throw an error when cancelling non-existing booking")
-    void shouldThrowNotFoundWhenCancellingNonExistingBooking() {
+    @DisplayName("Should throw an error when cancelling non-existing meeting")
+    void cancelMeeting_ShouldThrowNotFoundWhenCancellingNonExistingBooking() {
         // given
         when(meetingRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -225,8 +225,8 @@ class MeetingServiceImplTest {
 
     @Test
     @Disabled
-    @DisplayName("Should throw an error when cancelling past booking")
-    void shouldNotCancelPastBooking() {
+    @DisplayName("Should throw an error when cancelling past meeting")
+    void cancelMeeting_ShouldNotCancelPastBooking() {
         // given
         Meeting pastMeeting = new Meeting();
         pastMeeting.setId(1L);
@@ -245,8 +245,8 @@ class MeetingServiceImplTest {
 
     @Test
     @Disabled
-    @DisplayName("Should successfully search existing bookings")
-    void shouldSearchBookings() {
+    @DisplayName("Should successfully search existing meetings")
+    void search_ShouldReturnPageableWithMeetings() {
         // given
         SearchFiltersDTO filtersDTO = new SearchFiltersDTO();
         filtersDTO.setMeetingRoom(MeetingRoom.MAIN_CONFERENCE_ROOM);
@@ -268,8 +268,8 @@ class MeetingServiceImplTest {
 
     @Test
     @Disabled
-    @DisplayName("Should complete past bookings")
-    void shouldCompletePastBookings() {
+    @DisplayName("Should complete past meetings")
+    void closeConductedMeetings_ShouldCompletePastMeetings() {
         // given
         when(meetingRepository.findAllByBookingDateBeforeAndStatus(LocalDate.now(), MeetingStatus.SCHEDULED))
                 .thenReturn(Arrays.asList(validMeeting1, validMeeting2));
