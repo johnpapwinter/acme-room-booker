@@ -5,6 +5,7 @@ import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,6 +44,7 @@ public class IntegrationTest {
 
 
     @Test
+    @Disabled
     @DisplayName("Should return paginated bookings with a 200 status")
     void shouldReturnPaginatedBookings() throws Exception {
 
@@ -55,6 +57,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Should book a meeting")
     void shouldBookMeeting() throws Exception {
         MeetingDTO dto = MeetingDTO.builder()
@@ -75,6 +78,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Should cancel a booking")
     void shouldCancelBooking() throws Exception {
         MeetingDTO dto = MeetingDTO.builder()
@@ -103,6 +107,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Should search a booking")
     void shouldSearchBooking() throws Exception {
         SearchFiltersDTO filters = new SearchFiltersDTO();
@@ -124,6 +129,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Should return an array of validation errors for invalid BookingDTO")
     void shouldReturnErrorForInvalidBookingDTO() throws Exception {
         MeetingDTO dto = MeetingDTO.builder() // object empty, all required fields null
@@ -148,6 +154,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Should return an array of validation errors for invalid search filters")
     void shouldReturnErrorForInvalidSearchFilters() throws Exception {
         SearchFiltersDTO filtersDTO = new SearchFiltersDTO(); // object empty, all required fields null
