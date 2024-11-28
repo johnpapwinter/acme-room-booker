@@ -3,8 +3,11 @@ package com.acme.roombooker.integration;
 import com.acme.roombooker.enums.MeetingRoom;
 import com.acme.roombooker.dto.MeetingDTO;
 import com.acme.roombooker.dto.SearchFiltersDTO;
+import com.acme.roombooker.security.AcmePrincipal;
+import com.acme.roombooker.security.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +18,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,6 +32,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,7 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
+@Sql(value = "/cleanup.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/schema.sql", "/data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class IntegrationTest {
 
     @Autowired
@@ -42,6 +51,22 @@ public class IntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    private String token;
+
+    @BeforeEach
+    void setUp() {
+        AcmePrincipal principal = AcmePrincipal.builder()
+                .username("elmer")
+                .password("123")
+                .authorities(List.of(new SimpleGrantedAuthority("ADMIN")))
+                .build();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+        token = jwtUtils.generateToken(authentication);
+    }
+
 
     @Test
     @Disabled
@@ -49,7 +74,8 @@ public class IntegrationTest {
     void getAllMeetings_ShouldReturnPaginatedMeetings() throws Exception {
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/meetings/get-all"))
+                .perform(MockMvcRequestBuilders.get("/api/meetings/get-all")
+                .header("Authorization", "Bearer " + token))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.hasSize(3)));
@@ -70,6 +96,7 @@ public class IntegrationTest {
 
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/api/meetings/book")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -91,6 +118,7 @@ public class IntegrationTest {
 
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/meetings/book")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -99,7 +127,8 @@ public class IntegrationTest {
         Long bookingId = Long.parseLong(result.getResponse().getContentAsString());
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/meetings/cancel/{id}", bookingId))
+                .perform(MockMvcRequestBuilders.get("/api/meetings/cancel/{id}", bookingId)
+                .header("Authorization", "Bearer " + token))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(bookingId));
@@ -118,6 +147,7 @@ public class IntegrationTest {
 
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/api/meetings/search")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(filters))
                         .param("page", String.valueOf(pageable.getPageNumber()))
@@ -141,6 +171,7 @@ public class IntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/meetings/book")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
@@ -160,6 +191,7 @@ public class IntegrationTest {
         SearchFiltersDTO filtersDTO = new SearchFiltersDTO(); // object empty, all required fields null
 
         mockMvc.perform(post("/api/meetings/search")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(filtersDTO)))
                 .andExpect(status().isBadRequest())
