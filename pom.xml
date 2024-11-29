@@ -29,6 +29,8 @@
     <properties>
         <java.version>21</java.version>
         <app.java-jwt.version>4.2.1</app.java-jwt.version>
+        <app.postgres.version>42.7.2</app.postgres.version>
+        <app.springdoc.version>2.0.2</app.springdoc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -51,7 +53,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.2</version>
+            <version>${app.postgres.version}</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -84,7 +86,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.0.2</version>
+            <version>${app.springdoc.version}</version>
         </dependency>
     </dependencies>
 

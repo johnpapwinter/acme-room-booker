@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - acme-prod-network
+
+  acme-meeting-service:
+    build: .
+    container_name: acme-room-booker
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: %{SPRING_APPLICATION_NAME}
+      SPRING_PROFILES_ACTIVE: %{SPRING_PROFILES_ACTIVE}
+      SPRING_DATASOURCE_URL: %{SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: %{POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: %{POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: %{SPRING_JPA_HIBERNATE_DDL_AUTO}
+      SPRING_LIQUIBASE_CHANGE_LOG: %{SPRING_LIQUIBASE_CHANGE_LOG}
+      SPRING_DATASOURCE_DIALECT: %{SPRING_DATASOURCE_DIALECT}
+      SPRING_LIQUIBASE_ENABLED: %{SPRING_LIQUIBASE_ENABLED}
+      APP_LOGGING_FILE_LOCATION: %{APP_LOGGING_FILE_LOCATION}
+      APP_LOGGING_MAX_FILE_SIZE: %{APP_LOGGING_MAX_FILE_SIZE}
+      APP_LOGGING_MAX_HISTORY: %{APP_LOGGING_MAX_HISTORY}
+      APP_LOGGING_TOTAL_SIZE_CAP: %{APP_LOGGING_TOTAL_SIZE_CAP}
+      APP_JWT_SECRET: %{APP_JWT_SECRET}
+      APP_JWT_ISSUER: %{APP_JWT_ISSUER}
+      APP_JWT_EXPIRATION: %{APP_JWT_EXPIRATION}
+    networks:
+      - acme-prod-network
+
+
+networks:
+  acme-prod-network:
+    name: acme-booking-prod-network
+    driver: bridge
+
+volumes:
+  postgres-prod-data:
+    name: acme-postgres-prod-data
+    driver: local
