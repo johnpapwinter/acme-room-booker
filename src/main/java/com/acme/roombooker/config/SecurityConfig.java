@@ -51,6 +51,10 @@ public class SecurityConfig {
                 .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/actuator/**"
+                        )
+                        .permitAll()
+                        .requestMatchers(
                                 SWAGGER_WHITELIST
                         )
                         .permitAll()
